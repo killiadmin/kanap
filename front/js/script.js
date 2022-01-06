@@ -8,25 +8,27 @@ fetch("http://localhost:3000/api/products")
     })
 
 // ==========DONNEES===========
- 
+
 function addProducts(categoryData) {
-    const id = categoryData[0]._id  
+    const _id = categoryData[0]._id  
     const imageUrl = categoryData[0].imageUrl
     const altTxt = categoryData[0].altTxt
     const name = categoryData[0].name
     const description = categoryData[0].description
 
+    const couch = anchor(_id)
+
+    const article = document.createElement("article")
+    const image = buildImage(imageUrl, altTxt)
     const h3 = buildTitle(name)
     const p = buildPara(description)
-    const image = buildImage(imageUrl, altTxt)
-    const couch = anchor(id)
-    const article = buildArticle()
+
+// ============APPENDCHILD===============
 
     article.appendChild(image)
     article.appendChild(h3)
     article.appendChild(p)
-    appendChildren(couch, article)
-    
+    appendArticle(couch, article)   
 }
 
 // ===========ELEMENT "A"============== 
@@ -37,19 +39,11 @@ function anchor(id) {
     return couch
 }
 
-function appendChildren(couch, article) {
+function appendArticle(couch, article) {
     
     const items = document.getElementById("items")
     items.appendChild(couch)
     couch.appendChild(article)
-}
-
-// ========VIGNETTE ARTICLE=========
-
-function buildArticle() {
-    const article = document.createElement("article")
-    console.log(article)
-    return article
 }
 
 // =============IMAGE KANAP===============
