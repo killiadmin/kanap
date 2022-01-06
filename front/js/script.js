@@ -2,38 +2,39 @@
 
 fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
-    .then((categoryData) => {
-        console.log(categoryData)
-        return addProducts(categoryData)
-    })
+    .then((categoryData) => addProducts(categoryData))
 
 // ==========DONNEES===========
 
-function addProducts(categoryData) {
-    const _id = categoryData[0]._id  
-    const imageUrl = categoryData[0].imageUrl
-    const altTxt = categoryData[0].altTxt
-    const name = categoryData[0].name
-    const description = categoryData[0].description
+function addProducts(kanap) {
+    //**LOOP EACH**
+    kanap.forEach((chair) => {
+        const { _id, imageUrl, altTxt, name, description } = chair
+        const couch = linkElement(_id)
+        const article = document.createElement("article")
+        const image = buildImage(imageUrl, altTxt)
+        const h3 = buildTitle(name)
+        const p = buildPara(description)
 
-    const couch = anchor(_id)
-
-    const article = document.createElement("article")
-    const image = buildImage(imageUrl, altTxt)
-    const h3 = buildTitle(name)
-    const p = buildPara(description)
-
+        childsElements(article, [image, h3, p])//Array
+        appendArticle(couch, article)
+    })
+}
+        
 // ============APPENDCHILD===============
 
-    article.appendChild(image)
-    article.appendChild(h3)
-    article.appendChild(p)
-    appendArticle(couch, article)   
+function childsElements(article, array) {
+    array.forEach((item) => {
+        article.appendChild(item)
+    })
+    // article.appendChild(image)
+    // article.appendChild(h3)
+    // article.appendChild(p)     
 }
 
 // ===========ELEMENT "A"============== 
 
-function anchor(id) {
+function linkElement(id) {
     const couch = document.createElement("a")
     couch.href = "./product.html?id=42" + id
     return couch
@@ -52,6 +53,8 @@ function buildImage(imageUrl, altTxt) {
     const image = document.createElement("img")
     image.src = imageUrl
     image.alt = altTxt
+    // image.removeAttribute("title")
+    // image.removeAttribute("style")
     return image
 }
 
