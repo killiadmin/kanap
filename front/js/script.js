@@ -1,8 +1,10 @@
 // ===========TABLEAU=============
 
-fetch("http://localhost:3000/api/products")
+fetch("http://localhost:3000/api/products")// catalogue des canapés
     .then((response) => response.json())
-    .then((categoryData) => addProducts(categoryData))
+    .then((categoryData) => {console.log(categoryData)
+        return addProducts(categoryData)
+    })
 
 // ==========DONNEES===========
 
@@ -36,7 +38,7 @@ function childsElements(article, array) {
 
 function linkElement(id) {
     const couch = document.createElement("a")
-    couch.href = "./product.html?id=42" + id
+    couch.href = "./product.html?id=" + id
     return couch
 }
 
