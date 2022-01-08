@@ -8,6 +8,8 @@ fetch(`http://localhost:3000/api/products/${productId}`) //Template Litteral
     .then((res) => { console.log(productId) //console l'Id concernée
         return searchData(res)
     })
+    //Recupération du prix pour le localStorage
+    let storagePrice = 0 
 
 
 // Creation article
@@ -15,12 +17,15 @@ fetch(`http://localhost:3000/api/products/${productId}`) //Template Litteral
 function searchData(canap) {
     console.log({canap})// console article concernée
     const { altTxt, colors, description, imageUrl, name, price} = canap
+    storagePrice = price
     importImage(imageUrl, altTxt)
     importTitle(name)
     importPrice(price)
     importDescription(description) 
     importColors(colors)
 }
+
+// ====== function image=======
 
 function importImage(imageUrl, altTxt) {
     const image = document.createElement("img")
@@ -30,20 +35,28 @@ function importImage(imageUrl, altTxt) {
     parent.appendChild(image)
 }
 
+// =======Add function name======
+
 function importTitle(name) {
     const nameTitle = document.querySelector("#title")
     nameTitle.textContent = name
 }
+
+// ======Add function price======
 
 function importPrice(price) {
     const spanPrice = document.querySelector("#price")
     spanPrice.textContent = price
 }
 
+// ======Add function description==========
+
 function importDescription(description) {
     const Descript = document.querySelector("#description")
     Descript.textContent = description
 }
+
+//============== Add function Colors======== 
 
 function importColors(colors) {
     const select = document.querySelector("#colors")
@@ -55,3 +68,25 @@ function importColors(colors) {
         console.log(colors)
     });
 }
+
+    // ADD TO CART
+
+const button = document.querySelector("#addToCart")
+button.addEventListener("click", (e) =>  {
+    const colors = document.querySelector("#colors").value
+    const quantity = document.querySelector("#quantity").value
+    if (colors == null || colors === '' || quantity == null || quantity == 0) {
+        alert("Select your color and quantity")
+    }
+
+    // Add Local Storage 
+
+    const buyCanap = {
+        id : productId,
+        colors: colors,
+        quantity: Number(quantity),
+        price: storagePrice
+    }
+    localStorage.setItem(productId, JSON.stringify(buyCanap))
+    window.location.href = "cart.html"
+})
