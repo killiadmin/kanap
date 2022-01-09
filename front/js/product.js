@@ -8,8 +8,9 @@ fetch(`http://localhost:3000/api/products/${productId}`) //Template Litteral
     .then((res) => { console.log(productId) //console l'Id concernée
         return searchData(res)
     })
-    //Recupération du prix pour le localStorage
+    //Recupération du prix et de l'image pour le localStorage
     let storagePrice = 0 
+    let imgCart, altxtCart
 
 
 // Creation article
@@ -18,6 +19,8 @@ function searchData(canap) {
     console.log({canap})// console article concernée
     const { altTxt, colors, description, imageUrl, name, price} = canap
     storagePrice = price
+    imgCart = imageUrl
+    altxtCart = altTxt
     importImage(imageUrl, altTxt)
     importTitle(name)
     importPrice(price)
@@ -69,24 +72,46 @@ function importColors(colors) {
     });
 }
 
-    // ADD TO CART
+    // ========ADD TO CART========
 
 const button = document.querySelector("#addToCart")
-button.addEventListener("click", (e) =>  {
+button.addEventListener("click", basketCLick)  
+
+   //======Add Selector + value=======
+
+function basketCLick() {
     const colors = document.querySelector("#colors").value
     const quantity = document.querySelector("#quantity").value
-    if (colors == null || colors === '' || quantity == null || quantity == 0) {
-        alert("Select your color and quantity")
-    }
+    if (isOrderInvalid(colors, quantity)) return;
+    orderStorage(colors, quantity)
+    checkOutCart()
+}
 
-    // Add Local Storage 
+        //=======Add Local Storage========
 
+function orderStorage() {
     const buyCanap = {
         id : productId,
         colors: colors,
         quantity: Number(quantity),
-        price: storagePrice
+        price: storagePrice,
+        imageUrl: imgCart,
+        altTxt: altxtCart
     }
     localStorage.setItem(productId, JSON.stringify(buyCanap))
-    window.location.href = "cart.html"
-})
+}
+
+     // =====Fonction si la saisie des articles est null=======
+
+function isOrderInvalid(colors, quantity) {
+    if (colors == null || colors === '' || quantity == null || quantity == 0) {
+        alert("Select your color and quantity")
+        return true
+    }
+}
+    //=======Check la page Cart au click du boutton======
+
+function checkOutCart() {
+    window.location.href = "cart.html" 
+}
+    

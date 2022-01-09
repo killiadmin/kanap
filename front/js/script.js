@@ -5,6 +5,10 @@ fetch("http://localhost:3000/api/products")// catalogue des canapés
     .then((categoryData) => {console.log(categoryData)
         return addProducts(categoryData)
     })
+    .catch((error) => {
+        let errorContainer = document.querySelector(".items");
+        errorContainer.innerHTML = "Le serveur local (port : 3000) n'est pas en service";
+    })
 
 // ==========DONNEES===========
 
