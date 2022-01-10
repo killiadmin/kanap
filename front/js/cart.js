@@ -100,6 +100,9 @@ function containerContent(item) {
     inputQuantity.min = "1"
     inputQuantity.max = "100"
     inputQuantity.value = item.quantity
+    // EventListener click + clavier
+    inputQuantity.addEventListener("change", () => changeQuantity(item.id, inputQuantity.value))
+
 
     divSettings.appendChild(divQuantity)
     divQuantity.appendChild(paraQuantity)
@@ -145,4 +148,12 @@ function containerContent(item) {
         total = total + totalGlobalPrice
     })
     totalPrice.textContent = total
+    }
+
+    function changeQuantity(id, newValue) {
+        const changeItem = viewCart.find(item => item.id === id)
+        //Find renvoie la valeur du premier élement trouvé
+        changeItem.quantity = Number(newValue)
+        viewPrice()
+        viewQuantity()
     }
