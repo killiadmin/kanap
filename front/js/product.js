@@ -10,7 +10,7 @@ fetch(`http://localhost:3000/api/products/${productId}`) //Template Litteral
     })
     //Recupération du prix et de l'image pour le localStorage
     let storagePrice = 0 
-    let imgCart, altxtCart
+    let imgCart, altxtCart, productName
 
 
 // Creation article
@@ -21,6 +21,7 @@ function searchData(canap) {
     storagePrice = price
     imgCart = imageUrl
     altxtCart = altTxt
+    productName = name
     importImage(imageUrl, altTxt)
     importTitle(name)
     importPrice(price)
@@ -82,23 +83,25 @@ button.addEventListener("click", basketCLick)
 function basketCLick() {
     const colors = document.querySelector("#colors").value
     const quantity = document.querySelector("#quantity").value
-    if (isOrderInvalid(colors, quantity)) return;
+
+    if (isOrderInvalid(colors, quantity)) return
     orderStorage(colors, quantity)
     checkOutCart()
 }
 
         //=======Add Local Storage========
 
-function orderStorage() {
+function orderStorage(colors, quantity) {
     const buyCanap = {
         id : productId,
+        name : productName,
         colors: colors,
         quantity: Number(quantity),
         price: storagePrice,
         imageUrl: imgCart,
         altTxt: altxtCart
     }
-    localStorage.setItem(productId, JSON.stringify(buyCanap))
+    localStorage.setItem(productId, JSON.stringify(buyCanap)) //JSON = String
 }
 
      // =====Fonction si la saisie des articles est null=======
