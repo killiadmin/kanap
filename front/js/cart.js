@@ -28,8 +28,8 @@ function viewGlobalElement(item) {
     article.appendChild(cartContent)
     
     viewArticle(article)
-    viewQuantity(item)
     viewPrice(item)
+    viewQuantity(item)
     console.log(article)
 }
 
@@ -121,12 +121,28 @@ function containerContent(item) {
     return divContent    
 }
 
-function viewQuantity(item) {
-    const totalQuantity = document.querySelector("#totalQuantity")
-    totalQuantity.textContent = item.quantity
-}
+    // QUANTITÉ TOTAL
 
-function viewPrice(item) {
+    function viewQuantity() {
+        let total = 0
+        const totalQuantity = document.querySelector("#totalQuantity")
+        //Loop total quantity
+        viewCart.forEach(item => {
+            const totalGlobalQuantity = item.quantity
+            total = total + totalGlobalQuantity
+        })
+        totalQuantity.textContent = total
+    }
+
+    // PRIX TOTAL
+
+    function viewPrice() {
+    let total = 0;
     const totalPrice = document.querySelector("#totalPrice")
-    totalPrice.textContent = item.price
-}
+    //Loop total price
+    viewCart.forEach((item) => {
+        const totalGlobalPrice = item.price * item.quantity 
+        total = total + totalGlobalPrice
+    })
+    totalPrice.textContent = total
+    }
