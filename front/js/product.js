@@ -92,6 +92,7 @@ function basketCLick() {
         //=======Add Local Storage========
 
 function orderStorage(colors, quantity) {
+    const newKey = `${productId}:${colors}`// Utiliser des interpolations pour utiliser des expressions
     const buyCanap = {
         id : productId,
         name : productName,
@@ -101,7 +102,7 @@ function orderStorage(colors, quantity) {
         imageUrl: imgCart,
         altTxt: altxtCart
     }
-    localStorage.setItem(productId, JSON.stringify(buyCanap)) //JSON = String
+    localStorage.setItem(newKey, JSON.stringify(buyCanap)) //JSON = String
 }
 
      // =====Fonction si la saisie des articles est null=======

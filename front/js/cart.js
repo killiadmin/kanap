@@ -1,23 +1,25 @@
+// Résultat globale du tableau = viewCart
 const viewCart = []
 positionCart()
 viewCart.forEach((item) => (viewGlobalElement)(item))
+console.log(viewCart)
 
 //======LOOP POSITION CART========
 
 function positionCart() {
-    const numberItems = localStorage.length // Représente le nombre d'items stockés 
+    // Utiliser "length" pour représenter le nombre d'items stockés 
+    const numberItems = localStorage.length
     console.log("Nombre de canapés ajoutés:", numberItems) 
     for (let i = 0; i < numberItems; i++) {
         const keyElement = localStorage.getItem(localStorage.key(i))
-        const itemElement = JSON.parse(keyElement) //JSON = object
+        // Utiliser "parse pour changer le JSON en objet"
+        const itemElement = JSON.parse(keyElement)
         viewCart.push(itemElement)
         console.log ("Canapés à la position", i , "est", keyElement)   
-    }
-    
-    console.log(viewCart) // Resultat globale du panier    
+    } 
 }
 
-// ==========VIEW GLOBAL=============
+// ==========VUE GLOBAL=============
 
 function viewGlobalElement(item) {
     const article = baliseArticle(item)
@@ -100,8 +102,8 @@ function containerContent(item) {
     inputQuantity.min = "1"
     inputQuantity.max = "100"
     inputQuantity.value = item.quantity
-    // EventListener click + clavier
-    inputQuantity.addEventListener("change", () => changeQuantity(item.id, inputQuantity.value))
+    // Utiliser change pour impacter le changement à la souris + clavier
+    inputQuantity.addEventListener("change", () => changeQuantity(item.id, inputQuantity.value, item))
 
 
     divSettings.appendChild(divQuantity)
@@ -109,10 +111,11 @@ function containerContent(item) {
     divQuantity.appendChild(inputQuantity)
     divContent.appendChild(divSettings)
 
-    // DELETE
+    // ======================DELETE=============================
 
     const divDelete = document.createElement("div")
     divDelete.classList.add("cart__item__content__settings__delete")
+    divDelete.addEventListener("click", () => deleteItem(item))
 
     const paraDelete = document.createElement("p")
     paraDelete.classList.add("deleteItem")
@@ -124,25 +127,51 @@ function containerContent(item) {
     return divContent    
 }
 
-    // QUANTITÉ TOTAL
+    function deleteItem(item) {
+        //Utiliser "findIndex" pour renvoyer le premier élement du tableau
+        const itemDelete = viewCart.findIndex((product) => product.id === item.id && product.colors === item.colors)
+
+        //Utiliser splice pour modifier le contenu du tableau "viewCart"
+        viewCart.splice(itemDelete, 1)
+
+        viewQuantity()
+        viewPrice()
+        deleteWholeItem(item)
+        deleteVisualItem(item)
+    }
+
+    function deleteWholeItem(item) {
+        const localStoragekey = `${item.id}:${item.colors}`
+        // Utiliser "removeItem pour supprimer la clé en argument"
+        localStorage.removeItem(localStoragekey)
+    }
+
+    function deleteVisualItem(item) {
+        // ItemDelete va me chercher l'id et la couleur dans cart.html
+        const itemDelete = document.querySelector(`article[data-id="${item.id}"][data-colors="${item.colors}"]`)
+        // Utiliser "remove pour supprimer un element"
+        itemDelete.remove()
+    }
+
+    // ========================QUANTITY TOTAL=================================
 
     function viewQuantity() {
         let total = 0
         const totalQuantity = document.querySelector("#totalQuantity")
-        //Loop total quantity
-        viewCart.forEach(item => {
+        //Utiliser une loop direct pour executer la quantité total
+        viewCart.forEach((item) => {
             const totalGlobalQuantity = item.quantity
             total = total + totalGlobalQuantity
         })
         totalQuantity.textContent = total
     }
 
-    // PRIX TOTAL
+    // ==========================PRICE TOTAL==============================
 
     function viewPrice() {
     let total = 0;
     const totalPrice = document.querySelector("#totalPrice")
-    //Loop total price
+    //Utiliser une loop direct pour executer le prix total
     viewCart.forEach((item) => {
         const totalGlobalPrice = item.price * item.quantity 
         total = total + totalGlobalPrice
@@ -150,10 +179,23 @@ function containerContent(item) {
     totalPrice.textContent = total
     }
 
-    function changeQuantity(id, newValue) {
-        const changeItem = viewCart.find(item => item.id === id)
-        //Find renvoie la valeur du premier élement trouvé
+    //===========================UPDATE QUANTITY AND PRICE=================================
+
+    function changeQuantity(id, newValue, item) {
+        const changeItem = viewCart.find((item) => item.id === id)
+        //Utiliser Find pour renvoyer la valeur du premier élement trouvé
         changeItem.quantity = Number(newValue)
+        item.quantity = changeItem.quantity
         viewPrice()
         viewQuantity()
+        newBasket(item)
+    }
+
+    // ============================NEW QUANTITY TO REFRESH PAGE===============================
+
+    function newBasket(item) {
+        const newData = JSON.stringify(item)
+        const newKey = `${item.id}:${item.colors}`
+        //Utiliser setItem pour Maj la clé
+        localStorage.setItem(newKey, newData)
     }
