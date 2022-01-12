@@ -1,4 +1,5 @@
-const queryString = window.location.search// Recherche précise après le "?", exe.href pour recherche URL complet
+// Recherche précise après le "?", exe.href pour recherche URL complet
+const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 const productId = urlParams.get("id")
 // console.log({ productId })
@@ -13,10 +14,11 @@ fetch(`http://localhost:3000/api/products/${productId}`) //Template Litteral
     let imgCart, altxtCart, productName
 
 
-// Creation article
+// ======================CREATION ARTICLE=================
 
 function searchData(canap) {
-    console.log({canap})// console article concernée
+    // console article concernée
+    // console.log({canap})
     const { altTxt, colors, description, imageUrl, name, price} = canap
     storagePrice = price
     imgCart = imageUrl
@@ -29,7 +31,7 @@ function searchData(canap) {
     importColors(colors)
 }
 
-// ====== function image=======
+// ================ FUNCTION IMAGE=====================
 
 function importImage(imageUrl, altTxt) {
     const image = document.createElement("img")
@@ -39,21 +41,21 @@ function importImage(imageUrl, altTxt) {
     parent.appendChild(image)
 }
 
-// =======Add function name======
+// ================ADD FUNCTION NAME==============
 
 function importTitle(name) {
     const nameTitle = document.querySelector("#title")
     nameTitle.textContent = name
 }
 
-// ======Add function price======
+// =================ADD FUNCTION PRICE===============
 
 function importPrice(price) {
     const spanPrice = document.querySelector("#price")
     spanPrice.textContent = price
 }
 
-// ======Add function description==========
+// ===============ADD FUNCTION DESCRIPTION======================
 
 function importDescription(description) {
     const Descript = document.querySelector("#description")
@@ -73,12 +75,12 @@ function importColors(colors) {
     });
 }
 
-    // ========ADD TO CART========
+    // =======================ADD TO CART=====================
 
 const button = document.querySelector("#addToCart")
 button.addEventListener("click", basketCLick)  
 
-   //======Add Selector + value=======
+   //====================ADD SELECTOR + VALUE==================
 
 function basketCLick() {
     const colors = document.querySelector("#colors").value
@@ -89,10 +91,11 @@ function basketCLick() {
     checkOutCart()
 }
 
-        //=======Add Local Storage========
+        //=====================ADD LOCAL STORAGE=======================
 
 function orderStorage(colors, quantity) {
-    const newKey = `${productId}:${colors}`// Utiliser des interpolations pour utiliser des expressions
+    // Utiliser des interpolations pour utiliser des expressions
+    const newKey = `${productId}:${colors}`
     const buyCanap = {
         id : productId,
         name : productName,
@@ -102,10 +105,11 @@ function orderStorage(colors, quantity) {
         imageUrl: imgCart,
         altTxt: altxtCart
     }
-    localStorage.setItem(newKey, JSON.stringify(buyCanap)) //JSON = String
+    //JSON = String
+    localStorage.setItem(newKey, JSON.stringify(buyCanap)) 
 }
 
-     // =====Fonction si la saisie des articles est null=======
+     // =============FONCTION SI LA SAISIE DES ARTICLES EST NULL==============
 
 function isOrderInvalid(colors, quantity) {
     if (colors == null || colors === '' || quantity == null || quantity == 0) {
@@ -113,7 +117,7 @@ function isOrderInvalid(colors, quantity) {
         return true
     }
 }
-    //=======Check la page Cart au click du boutton======
+    //====================CHECK LA PAGE CART====================
 
 function checkOutCart() {
     window.location.href = "cart.html" 

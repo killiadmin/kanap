@@ -199,3 +199,67 @@ function containerContent(item) {
         //Utiliser setItem pour Maj la clé
         localStorage.setItem(newKey, newData)
     }
+
+    // =============================FORM============================
+
+    const buttonOrder = document.querySelector("#order")
+    buttonOrder.addEventListener("click", (e) => formRequest(e))
+
+    function formRequest(e) {
+        e.preventDefault()
+        // Si le panier est vide la requete POST ne fonctionne pas !
+        if (viewCart.length === 0) alert("Votre panier est vide !")
+
+        const body = requestControllers()
+        // Utiliser Fetch pour envoyer une requete POST 
+        fetch("http://localhost:3000/api/products/order", {
+            method : "POST",
+            body : JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => console.log(data)) 
+    }
+
+        function requestControllers() {
+        // Utiliser HTMLFormElement retourne HTMLFormControlCollection
+        // console.log(cartForm.elements)
+            const cartForm = document.querySelector(".cart__order__form")
+        // On recupere les valeurs du tableau avec value   
+            const firstName = cartForm.elements.firstName.value
+            const lastName = cartForm.elements.lastName.value
+            const address = cartForm.elements.address.value
+            const city = cartForm.elements.city.value
+            const email = cartForm.elements.email.value
+        //Fonction récupérer dans le sous dossier /controllers
+            const body = { 
+            contact: {
+                firstName: firstName,
+                lastName: lastName,
+                address: address,
+                city: city,
+                email: email 
+            },
+
+            products: idOrders()
+             }
+             console.log(body)
+             return body
+        }        
+
+    function idOrders() {
+        // On récupère le nombre d'item stockés dans storage
+        const numberProducts = localStorage.length
+        const arrayProducts = []
+        for (let i = 0; i < numberProducts; i++) {
+            // On va récupérer la clé dans le storage
+            const products = localStorage.key(i);
+            // On utilise split pour selectionner uniquement la couleur dans notre id 
+            const id = products.split(":")[0]
+            // On push ensuite dans le tableau
+            arrayProducts.push(id)
+        }
+        return arrayProducts
+    }
