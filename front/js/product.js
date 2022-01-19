@@ -1,125 +1,165 @@
-// Recherche précise après le "?", exe.href pour recherche URL complet
-const queryString = window.location.search
-const urlParams = new URLSearchParams(queryString)
-const productId = urlParams.get("id")
-// console.log({ productId })
+/**
+ * Constante qui vont rechercher l'id du canapé grâce à "URLSearchParams", .search est utilisé pour faire une recherche précise
+ * après le "?" de l'url, qui va donc retourner l'id du canapé
+ */
 
-fetch(`http://localhost:3000/api/products/${productId}`) //Template Litteral
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get("id");
+
+/**
+ * Fetch qui éxecute une requete GET avec comme paramètre "{productId}" qui est remplacé par l'id du canapé 
+ * qui retourne ensuite la fonction "searchData"
+ * Deux variables sont ensuite déclarés pour récupérer le prix ensuite l'imagen, le texte alternatif et le nom dans le localStorage
+ */
+
+fetch(`http://localhost:3000/api/products/${productId}`)
     .then((response) => response.json())
-    .then((res) => { console.log(productId) //console l'Id concernée
-        return searchData(res)
-    })
-    //Recupération du prix et de l'image pour le localStorage
-    let storagePrice = 0 
-    let imgCart, altxtCart, productName
+    .then((res) => { console.log(productId)
+        return allDataFromProduct(res);
+    });
+    let priceCart = 0;
+    let imgCart, altxtCart, nameCart;
 
+/**
+ * Fonction qui incrémente les données necessaire pour le localStorage qui sont "altTxt", "couleur", "description", "image", "nom" et "prix"
+ * @param {object} product Retourne toutes les données du produit
+ */
 
-// ======================CREATION ARTICLE=================
-
-function searchData(canap) {
-    // console article concernée
-    // console.log({canap})
-    const { altTxt, colors, description, imageUrl, name, price} = canap
-    storagePrice = price
-    imgCart = imageUrl
-    altxtCart = altTxt
-    productName = name
-    importImage(imageUrl, altTxt)
-    importTitle(name)
-    importPrice(price)
-    importDescription(description) 
-    importColors(colors)
+function allDataFromProduct(product) {
+    const { altTxt, colors, description, imageUrl, name, price} = product;
+    priceCart = price;
+    imgCart = imageUrl;
+    altxtCart = altTxt;
+    nameCart = name;
+    importImage(imageUrl, altTxt);
+    importTitle(name);
+    importPrice(price);
+    importDescription(description);
+    importColors(colors);
 }
 
-// ================ FUNCTION IMAGE=====================
+/**
+ * Fonction qui crée l'élement "img", lui attribue la classe ".item__img" pour ensuite lui affecter comme enfant image qui lui apport la source et le texte alternatif
+ * @param {object} imageUrl Url de l'image
+ * @param {object} altTxt Texte alternatif de l'image
+ */
 
 function importImage(imageUrl, altTxt) {
-    const image = document.createElement("img")
-    image.src = imageUrl
-    image.alt = altTxt
-    const parent = document.querySelector(".item__img")
-    parent.appendChild(image)
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = altTxt;
+    const parent = document.querySelector(".item__img");
+    parent.appendChild(image);
 }
 
-// ================ADD FUNCTION NAME==============
+/**
+ * Fonction qui selectionne l'id "#title" pour lui attribuer le "nom" du produit 
+ * @param {object} name Le nom du produit
+ */
 
 function importTitle(name) {
-    const nameTitle = document.querySelector("#title")
-    nameTitle.textContent = name
+    const nameTitle = document.querySelector("#title");
+    nameTitle.textContent = name;
 }
 
-// =================ADD FUNCTION PRICE===============
+/**
+ * Fonction qui selectionne l'id "#price" pour lui attribuer le "prix" du produit 
+ * @param {number} price Le prix du produit
+ */
 
 function importPrice(price) {
-    const spanPrice = document.querySelector("#price")
-    spanPrice.textContent = price
+    const spanPrice = document.querySelector("#price");
+    spanPrice.textContent = price;
 }
 
-// ===============ADD FUNCTION DESCRIPTION======================
+/**
+ * Fonction qui selectionne l'id "#description" pour lui attribuer la "description" du produit 
+ * @param {object} description La description du produit
+ */
 
 function importDescription(description) {
-    const Descript = document.querySelector("#description")
-    Descript.textContent = description
+    const Descript = document.querySelector("#description");
+    Descript.textContent = description;
 }
 
-//============== Add function Colors======== 
+/**
+ * Fonction qui selectionne l'id "#colors" pour lui attribuer la "couleur" du produit,
+ * qui ensuite crée une boucle qui va crée un élement "option" qui représentera la valeur et le contenue de l'option pour chaque couleur disponible,
+ * option sera ensuite attribuer comme enfant à l'id "#colors" 
+ * @param {object} colors Représente la selection des couleurs du produit en question
+ */
 
 function importColors(colors) {
-    const select = document.querySelector("#colors")
+    const parentColors = document.querySelector("#colors");
     colors.forEach(selectColors => {
-        const option = document.createElement("option")
-        option.value = selectColors
-        option.textContent = selectColors
-        select.appendChild(option)
-        console.log(colors)
+        const option = document.createElement("option");
+        option.value = selectColors;
+        option.textContent = selectColors;
+        parentColors.appendChild(option);
     });
 }
 
-    // =======================ADD TO CART=====================
+/**
+ * Constante "button" qui représente le boutton "Ajouter au panier", l'id "#addToCart" lui est attribuer
+ * ensuite un evenement au click sera affecter à cette constante 
+ */
 
-const button = document.querySelector("#addToCart")
-button.addEventListener("click", basketCLick)  
+const button = document.querySelector("#addToCart");
+button.addEventListener("click", buyCLick);
 
-   //====================ADD SELECTOR + VALUE==================
+/**
+ * Fonction qui s'effectue au click, il y est insérer deux constante qui selectionne les valeurs de l'id "#colors" et "#quantity"
+ * Si les conditions sont rempli, les fonctions "orderStorage" et "addProductValid" sont éxécutés 
+ * @returns La fonction "orderInvalid" est retouner si les conditions ne sont pas rempli
+ */
 
-function basketCLick() {
-    const colors = document.querySelector("#colors").value
-    const quantity = document.querySelector("#quantity").value
+function buyCLick() {
+    const colors = document.querySelector("#colors").value;
+    const quantity = document.querySelector("#quantity").value;
 
-    if (isOrderInvalid(colors, quantity)) return
-    orderStorage(colors, quantity)
-    checkOutCart()
+    if (orderInvalid(colors, quantity)) return;
+    orderStorage(colors, quantity);
+    addProductValid();
 }
 
-        //=====================ADD LOCAL STORAGE=======================
+/**
+ * Fonction qui ajoute la nouvelle clé et sa valeur dans le localStorage. La constante "buyProduct" va récupérer toutes les données du produit
+ * @param {string} colors Représente la couleur du produit pour ne pas confondre deux produits ayant le même nom 
+ * @param {number} quantity Représente la quantité de l'ordre
+ */
 
 function orderStorage(colors, quantity) {
-    // Utiliser des interpolations pour utiliser des expressions
-    const newKey = `${productId}:${colors}`
-    const buyCanap = {
+    const newKey = `${productId}:${colors}`;
+    const buyProduct = {
         id : productId,
-        name : productName,
+        name : nameCart,
         colors: colors,
         quantity: Number(quantity),
-        price: storagePrice,
+        price: priceCart,
         imageUrl: imgCart,
         altTxt: altxtCart
-    }
-    //JSON = String
-    localStorage.setItem(newKey, JSON.stringify(buyCanap)) 
+    };
+    localStorage.setItem(newKey, JSON.stringify(buyProduct));
 }
 
-     // =============FONCTION SI LA SAISIE DES ARTICLES EST NULL==============
+/**
+ * Fonction qui s'effectue au click si aucune couleur ou quantité n'est selectionnée à l'achat + une alerte pour indiquer à l'utilisateur 
+ * @param {string} colors Représente la couleur du produit
+ * @param {number} quantity Représente la quantité de l'ordre
+ * @returns Retourne "true" si les mauvaises conditions sont remplies
+ */
 
-function isOrderInvalid(colors, quantity) {
+function orderInvalid(colors, quantity) {
     if (colors == null || colors === '' || quantity == null || quantity == 0) {
-        alert("Select your color and quantity")
-        return true
+        alert("Select your color and quantity");
+        return true;
     }
 }
-    //====================CHECK LA PAGE CART====================
 
-function checkOutCart() {
-    window.location.href = "cart.html" 
+/**
+ * Fonction qui nous dirige vers la page du panier si l'ordre est effectuer avec succès 
+ */
+
+function addProductValid() {
+    window.location.href = "cart.html";
 }
-    

@@ -1,14 +1,12 @@
-//@ts-check
-
 /**
- * Fetch qui récupére le catalogue des canapés et retourne une erreur si le serveur local n'est pas utilisé
- * et qui retourne ensuite la fonction previewKanapArticle
+ * Fetch éxécute une requete GET et qui récupére le catalogue des canapés via l'url de l'API et retourne une erreur si le serveur local n'est pas en service,
+ * qui retourne ensuite la fonction previewKanapArticle
  */
 
 fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
     .then((categoryData) => {console.log(categoryData)
-        return previewKanapArticle(categoryData)
+        return previewKanapArticle(categoryData);
     })
     .catch((error) => {
         let errorContainer = document.querySelector(".items");
@@ -22,53 +20,53 @@ fetch("http://localhost:3000/api/products")
 
 function previewKanapArticle(visual) {
     visual.forEach((picture) => {
-        const { _id, imageUrl, altTxt, name, description } = picture
-        const urlProducts = linkElement(_id)
-        const article = document.createElement("article")
-        const image = buildImage(imageUrl, altTxt)
-        const h3 = buildTitle(name)
-        const p = buildDescription(description)
+        const { _id, imageUrl, altTxt, name, description } = picture;
+        const urlProducts = linkElement(_id);
+        const article = document.createElement("article");
+        const image = buildImage(imageUrl, altTxt);
+        const h3 = buildTitle(name);
+        const p = buildDescription(description);
 
-        articleComponents(article, [image, h3, p])
-        itemsArticle(urlProducts, article)
+        articleComponents(article, [image, h3, p]);
+        itemsArticle(urlProducts, article);
     })
 }
         
 /**
- * Fonction qui affecte 3 enfants à article qui sont image, h3 et p, une boucle forEach est utilisée pour éviter une répétition
+ * Fonction qui affecte 3 enfants à article qui sont "image", "h3" et "p", une boucle forEach est utilisée pour éviter une répétition
  * @param {object} article Il est composer d'un tableau de 3 balises
  * @param {array} array Le tableau est composer de img, h3 et p
  */
 
 function articleComponents(article, array) {
     array.forEach((item) => {
-        article.appendChild(item)
+        article.appendChild(item);
     })  
 }
 
 /**
  *  Fonction qui crée l'élément "a" pour produire un lien href pour chaque canapé et son id
- * @param {object} _id Affecte l'id du canapé
+ * @param {object} _id Affecte l'id du canapé à l'url
  * @returns Retourne l'url de présentation du canapé concerné suivant l'id fournit 
  */ 
 
 function linkElement(_id) {
-    const kanapLinkElement = document.createElement("a")
-    kanapLinkElement.href = "./product.html?id=" + _id
-    return kanapLinkElement
+    const kanapLinkElement = document.createElement("a");
+    kanapLinkElement.href = "./product.html?id=" + _id;
+    return kanapLinkElement;
 }
 
 /**
- * Fonction va rechercher l'id "items pour lui affecter un enfant qui est "urlProducts" pour à son tour lui affecter un enfant, "article"
+ * Fonction qui va rechercher l'id "#items" pour lui affecter un enfant qui est "urlProducts" pour à son tour lui affecter un enfant, "article"
  * @param {object} urlProducts Représente l'url d'un canapé
  * @param {object} article L'article est composer de img, h3 et p
  */
 
 function itemsArticle(urlProducts, article) {
     
-    const items = document.getElementById("items")
-    items.appendChild(urlProducts)
-    urlProducts.appendChild(article)
+    const items = document.getElementById("items");
+    items.appendChild(urlProducts);
+    urlProducts.appendChild(article);
 }
 
 /**
@@ -79,34 +77,34 @@ function itemsArticle(urlProducts, article) {
  */
 
 function buildImage(imageUrl, altTxt) {
-    const image = document.createElement("img")
-    image.src = imageUrl
-    image.alt = altTxt
-    return image
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = altTxt;
+    return image;
 }
 
 /**
- * Fonction qui crée l'élement "h3" pour lui affecter le nom du canapé pour ensuite luia attribuer la classe de "productName"
+ * Fonction qui crée l'élement "h3" pour lui affecter le nom du canapé pour ensuite lui attribuer la classe de ".productName"
  * @param {object} name Il va récupérer le nom du canapé dans le tableau "categoryData"
- * @returns Le nom 
+ * @returns Le nom du canapé
  */
 
 function buildTitle(name) {
-    const h3 = document.createElement("h3")
-    h3.textContent = name
-    h3.classList.add("productName")
-    return h3
+    const h3 = document.createElement("h3");
+    h3.textContent = name;
+    h3.classList.add("productName");
+    return h3;
 }
 
 /**
- * Fonction qui crée l'élement "p" pour lui affecter la description du canapé pour ensuite lui attribuer la classe de "productDescription"
+ * Fonction qui crée l'élement "p" pour lui affecter la description du canapé pour ensuite lui attribuer la classe de ".productDescription"
  * @param {object} description Il va récupérer la description du canapé dans le tableau "categoryData"
- * @returns La description
+ * @returns La description du canapé
  */
 
 function buildDescription(description) {
-    const p = document.createElement("p")
-    p.textContent = description
-    p.classList.add("productDescription")
-    return p
+    const p = document.createElement("p");
+    p.textContent = description;
+    p.classList.add("productDescription");
+    return p;
 }
