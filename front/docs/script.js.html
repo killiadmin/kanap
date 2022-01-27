@@ -34,7 +34,7 @@
 fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
     .then((categoryData) => {console.log(categoryData)
-        return previewKanapArticle(categoryData)
+        return previewKanapArticle(categoryData);
     })
     .catch((error) => {
         let errorContainer = document.querySelector(".items");
@@ -48,15 +48,15 @@ fetch("http://localhost:3000/api/products")
 
 function previewKanapArticle(visual) {
     visual.forEach((picture) => {
-        const { _id, imageUrl, altTxt, name, description } = picture
-        const urlProducts = linkElement(_id)
-        const article = document.createElement("article")
-        const image = buildImage(imageUrl, altTxt)
-        const h3 = buildTitle(name)
-        const p = buildDescription(description)
+        const { _id, imageUrl, altTxt, name, description } = picture;
+        const urlProducts = linkElement(_id);
+        const article = document.createElement("article");
+        const image = buildImage(imageUrl, altTxt);
+        const h3 = buildTitle(name);
+        const p = buildDescription(description);
 
-        articleComponents(article, [image, h3, p])
-        itemsArticle(urlProducts, article)
+        articleComponents(article, [image, h3, p]);
+        itemsArticle(urlProducts, article);
     })
 }
         
@@ -68,7 +68,7 @@ function previewKanapArticle(visual) {
 
 function articleComponents(article, array) {
     array.forEach((item) => {
-        article.appendChild(item)
+        article.appendChild(item);
     })  
 }
 
@@ -79,9 +79,9 @@ function articleComponents(article, array) {
  */ 
 
 function linkElement(_id) {
-    const kanapLinkElement = document.createElement("a")
-    kanapLinkElement.href = "./product.html?id=" + _id
-    return kanapLinkElement
+    const kanapLinkElement = document.createElement("a");
+    kanapLinkElement.href = "./product.html?id=" + _id;
+    return kanapLinkElement;
 }
 
 /**
@@ -92,9 +92,9 @@ function linkElement(_id) {
 
 function itemsArticle(urlProducts, article) {
     
-    const items = document.getElementById("items")
-    items.appendChild(urlProducts)
-    urlProducts.appendChild(article)
+    const items = document.getElementById("items");
+    items.appendChild(urlProducts);
+    urlProducts.appendChild(article);
 }
 
 /**
@@ -105,10 +105,10 @@ function itemsArticle(urlProducts, article) {
  */
 
 function buildImage(imageUrl, altTxt) {
-    const image = document.createElement("img")
-    image.src = imageUrl
-    image.alt = altTxt
-    return image
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = altTxt;
+    return image;
 }
 
 /**
@@ -118,10 +118,10 @@ function buildImage(imageUrl, altTxt) {
  */
 
 function buildTitle(name) {
-    const h3 = document.createElement("h3")
-    h3.textContent = name
-    h3.classList.add("productName")
-    return h3
+    const h3 = document.createElement("h3");
+    h3.textContent = name;
+    h3.classList.add("productName");
+    return h3;
 }
 
 /**
@@ -131,10 +131,10 @@ function buildTitle(name) {
  */
 
 function buildDescription(description) {
-    const p = document.createElement("p")
-    p.textContent = description
-    p.classList.add("productDescription")
-    return p
+    const p = document.createElement("p");
+    p.textContent = description;
+    p.classList.add("productDescription");
+    return p;
 }</code></pre>
         </article>
     </section>
@@ -145,13 +145,13 @@ function buildDescription(description) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addProductValid">addProductValid</a></li><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#arrayGlobalFromProduct">arrayGlobalFromProduct</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#button">button</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#masterGlobalProduct">masterGlobalProduct</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#quantityArray">quantityArray</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#button">button</a></li><li><a href="global.html#buttonOrder">buttonOrder</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#checkTotalPrice">checkTotalPrice</a></li><li><a href="global.html#checkTotalQuantity">checkTotalQuantity</a></li><li><a href="global.html#containerItemContent">containerItemContent</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#divDeleteEvent">divDeleteEvent</a></li><li><a href="global.html#formRequestPost">formRequestPost</a></li><li><a href="global.html#idOrders">idOrders</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemContentDelete">itemContentDelete</a></li><li><a href="global.html#itemContentDescription">itemContentDescription</a></li><li><a href="global.html#itemContentQuantity">itemContentQuantity</a></li><li><a href="global.html#itemContentSettings">itemContentSettings</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#masterGlobalProduct">masterGlobalProduct</a></li><li><a href="global.html#newQuantityAndPrice">newQuantityAndPrice</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#productId">productId</a></li><li><a href="global.html#removeItemFromPage">removeItemFromPage</a></li><li><a href="global.html#removeItemFromStorage">removeItemFromStorage</a></li><li><a href="global.html#requestControllers">requestControllers</a></li><li><a href="global.html#saveNewPriceAndQuantity">saveNewPriceAndQuantity</a></li><li><a href="global.html#screenImageProduct">screenImageProduct</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Jan 18 2022 21:43:52 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jan 20 2022 13:29:09 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

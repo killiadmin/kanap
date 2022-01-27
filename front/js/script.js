@@ -5,9 +5,8 @@
 
 fetch("http://localhost:3000/api/products")
     .then((response) => response.json())
-    .then((categoryData) => {console.log(categoryData)
-        return previewKanapArticle(categoryData);
-    })
+    .then((products) => previewKanapArticle(products))
+
     .catch((error) => {
         let errorContainer = document.querySelector(".items");
         errorContainer.innerHTML = "Le serveur local (port : 3000) n'est pas en service";
@@ -15,11 +14,11 @@ fetch("http://localhost:3000/api/products")
 
 /**
  *Fonction qui retourne une vignette d'un canapé et qui crée les balises HTML necessaire pour son visuel(a, article, img, h3 et p)
- * @param {object} visual Représente le visuel en frontend global de l'article
+ * @param {object} product Représente le visuel en frontend global de l'article
  */
 
-function previewKanapArticle(visual) {
-    visual.forEach((picture) => {
+function previewKanapArticle(product) {
+    product.forEach((picture) => {
         const { _id, imageUrl, altTxt, name, description } = picture;
         const urlProducts = linkElement(_id);
         const article = document.createElement("article");

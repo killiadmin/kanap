@@ -27,12 +27,21 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Constante qui vont rechercher l'id du canapé grâce à "URLSearchParams", .search est utilisé pour faire une recherche précise
- * après le "?" de l'url, qui va donc retourner l'id du canapé
+ * @constant urlParams récupérer l'id du canapé grâce à "URLSearchParams", .search est utilisé pour faire une recherche précise
+ *  * après le "?" de l'url
+ * @type {object}
+ * @default URLSearchParams 
  */
 
-const urlParams = new URLSearchParams(window.location.search)
-const productId = urlParams.get("id")
+const urlParams = new URLSearchParams(window.location.search);
+
+/**
+ * @constant productId Retourne l'id du canapé grâce a la constante urlParams
+ * @type {object}
+ * @default urlParams.get("id")
+ */
+
+const productId = urlParams.get("id");
 
 /**
  * Fetch qui éxecute une requete GET avec comme paramètre "{productId}" qui est remplacé par l'id du canapé 
@@ -43,10 +52,10 @@ const productId = urlParams.get("id")
 fetch(`http://localhost:3000/api/products/${productId}`)
     .then((response) => response.json())
     .then((res) => { console.log(productId)
-        return allDataFromProduct(res)
-    })
-    let priceCart = 0 
-    let imgCart, altxtCart, nameCart
+        return allDataFromProduct(res);
+    });
+    let priceCart = 0;
+    let imgCart, altxtCart, nameCart;
 
 /**
  * Fonction qui incrémente les données necessaire pour le localStorage qui sont "altTxt", "couleur", "description", "image", "nom" et "prix"
@@ -54,16 +63,16 @@ fetch(`http://localhost:3000/api/products/${productId}`)
  */
 
 function allDataFromProduct(product) {
-    const { altTxt, colors, description, imageUrl, name, price} = product
-    priceCart = price
-    imgCart = imageUrl
-    altxtCart = altTxt
-    nameCart = name
-    importImage(imageUrl, altTxt)
-    importTitle(name)
-    importPrice(price)
-    importDescription(description) 
-    importColors(colors)
+    const { altTxt, colors, description, imageUrl, name, price} = product;
+    priceCart = price;
+    imgCart = imageUrl;
+    altxtCart = altTxt;
+    nameCart = name;
+    importImage(imageUrl, altTxt);
+    importTitle(name);
+    importPrice(price);
+    importDescription(description);
+    importColors(colors);
 }
 
 /**
@@ -73,11 +82,11 @@ function allDataFromProduct(product) {
  */
 
 function importImage(imageUrl, altTxt) {
-    const image = document.createElement("img")
-    image.src = imageUrl
-    image.alt = altTxt
-    const parent = document.querySelector(".item__img")
-    parent.appendChild(image)
+    const image = document.createElement("img");
+    image.src = imageUrl;
+    image.alt = altTxt;
+    const parent = document.querySelector(".item__img");
+    parent.appendChild(image);
 }
 
 /**
@@ -86,8 +95,8 @@ function importImage(imageUrl, altTxt) {
  */
 
 function importTitle(name) {
-    const nameTitle = document.querySelector("#title")
-    nameTitle.textContent = name
+    const nameTitle = document.querySelector("#title");
+    nameTitle.textContent = name;
 }
 
 /**
@@ -96,8 +105,8 @@ function importTitle(name) {
  */
 
 function importPrice(price) {
-    const spanPrice = document.querySelector("#price")
-    spanPrice.textContent = price
+    const spanPrice = document.querySelector("#price");
+    spanPrice.textContent = price;
 }
 
 /**
@@ -106,8 +115,8 @@ function importPrice(price) {
  */
 
 function importDescription(description) {
-    const Descript = document.querySelector("#description")
-    Descript.textContent = description
+    const Descript = document.querySelector("#description");
+    Descript.textContent = description;
 }
 
 /**
@@ -118,12 +127,12 @@ function importDescription(description) {
  */
 
 function importColors(colors) {
-    const parentColors = document.querySelector("#colors")
+    const parentColors = document.querySelector("#colors");
     colors.forEach(selectColors => {
-        const option = document.createElement("option")
-        option.value = selectColors
-        option.textContent = selectColors
-        parentColors.appendChild(option)
+        const option = document.createElement("option");
+        option.value = selectColors;
+        option.textContent = selectColors;
+        parentColors.appendChild(option);
     });
 }
 
@@ -132,8 +141,8 @@ function importColors(colors) {
  * ensuite un evenement au click sera affecter à cette constante 
  */
 
-const button = document.querySelector("#addToCart")
-button.addEventListener("click", buyCLick)  
+const button = document.querySelector("#addToCart");
+button.addEventListener("click", buyCLick);
 
 /**
  * Fonction qui s'effectue au click, il y est insérer deux constante qui selectionne les valeurs de l'id "#colors" et "#quantity"
@@ -142,32 +151,41 @@ button.addEventListener("click", buyCLick)
  */
 
 function buyCLick() {
-    const colors = document.querySelector("#colors").value
-    const quantity = document.querySelector("#quantity").value
+    const colors = document.querySelector("#colors").value;
+    const quantity = document.querySelector("#quantity").value;
 
-    if (orderInvalid(colors, quantity)) return
-    orderStorage(colors, quantity)
-    addProductValid()
+    if (orderInvalid(colors, quantity)) return;
+    orderStorage(colors, quantity);
+    addProductValid();
 }
 
 /**
- * Fonction qui ajoute la nouvelle clé et sa valeur dans le localStorage. La constante "buyProduct" va récupérer toutes les données du produit
+ * Fonction qui ajoute une clé unique "panier" et sa valeur dans le localStorage. 
+ * La constante "valueKeyStorageProduct" va récupérer les données du produit qui sont propre aux choix de l'utilisateur (id, couleur et quantité)
+ * Si la clé existe "panier", "saveOrderKeyStorage" envoies les données dans le tableau si la clé n'existe pas "saveOrderKeyStorage" crée un tableau et incrémente les données 
  * @param {string} colors Représente la couleur du produit pour ne pas confondre deux produits ayant le même nom 
  * @param {number} quantity Représente la quantité de l'ordre
  */
 
 function orderStorage(colors, quantity) {
-    const newKey = `${productId}:${colors}`
-    const buyProduct = {
+    const valueKeyStorageProduct = {
         id : productId,
-        name : nameCart,
         colors: colors,
-        quantity: Number(quantity),
-        price: priceCart,
-        imageUrl: imgCart,
-        altTxt: altxtCart
+        quantity: Number(quantity)
+    };
+
+    let saveOrderKeyStorage = JSON.parse(localStorage.getItem("panier"))
+
+    if (saveOrderKeyStorage) {
+        saveOrderKeyStorage.push(valueKeyStorageProduct);
+        localStorage.setItem("panier", JSON.stringify(saveOrderKeyStorage));
     }
-    localStorage.setItem(newKey, JSON.stringify(buyProduct)) 
+
+    else{
+        saveOrderKeyStorage = [];
+        saveOrderKeyStorage.push(valueKeyStorageProduct);
+        localStorage.setItem("panier", JSON.stringify(saveOrderKeyStorage));
+    }
 }
 
 /**
@@ -179,8 +197,8 @@ function orderStorage(colors, quantity) {
 
 function orderInvalid(colors, quantity) {
     if (colors == null || colors === '' || quantity == null || quantity == 0) {
-        alert("Select your color and quantity")
-        return true
+        alert("Select your color and quantity");
+        return true;
     }
 }
 
@@ -188,10 +206,9 @@ function orderInvalid(colors, quantity) {
  * Fonction qui nous dirige vers la page du panier si l'ordre est effectuer avec succès 
  */
 
-function addProductValid() {
-    window.location.href = "cart.html" 
-}
-    </code></pre>
+// function addProductValid() {
+//     window.location.href = "cart.html";
+// }</code></pre>
         </article>
     </section>
 
@@ -201,13 +218,13 @@ function addProductValid() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addProductValid">addProductValid</a></li><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#arrayGlobalFromProduct">arrayGlobalFromProduct</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#button">button</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#masterGlobalProduct">masterGlobalProduct</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#quantityArray">quantityArray</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#button">button</a></li><li><a href="global.html#buttonOrder">buttonOrder</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#checkTotalPrice">checkTotalPrice</a></li><li><a href="global.html#checkTotalQuantity">checkTotalQuantity</a></li><li><a href="global.html#containerItemContent">containerItemContent</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#divDeleteEvent">divDeleteEvent</a></li><li><a href="global.html#formRequestPost">formRequestPost</a></li><li><a href="global.html#idOrders">idOrders</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemContentDelete">itemContentDelete</a></li><li><a href="global.html#itemContentDescription">itemContentDescription</a></li><li><a href="global.html#itemContentQuantity">itemContentQuantity</a></li><li><a href="global.html#itemContentSettings">itemContentSettings</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#masterGlobalProduct">masterGlobalProduct</a></li><li><a href="global.html#newQuantityAndPrice">newQuantityAndPrice</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#productId">productId</a></li><li><a href="global.html#removeItemFromPage">removeItemFromPage</a></li><li><a href="global.html#removeItemFromStorage">removeItemFromStorage</a></li><li><a href="global.html#requestControllers">requestControllers</a></li><li><a href="global.html#saveNewPriceAndQuantity">saveNewPriceAndQuantity</a></li><li><a href="global.html#screenImageProduct">screenImageProduct</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Jan 18 2022 21:43:52 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jan 20 2022 13:29:09 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

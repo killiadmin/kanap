@@ -1,10 +1,22 @@
 /**
- * Constante qui vont rechercher l'id du canapé grâce à "URLSearchParams", .search est utilisé pour faire une recherche précise
- * après le "?" de l'url, qui va donc retourner l'id du canapé
+ * @constant urlParams récupérer l'id du canapé grâce à "URLSearchParams", .search est utilisé pour faire une recherche précise
+ *  * après le "?" de l'url
+ * @type {object}
+ * @default URLSearchParams
  */
 
 const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get("id");
+
+/**
+ * @constant productId Retourne l'id du canapé grâce a la constante urlParams
+ * @type {object}
+ * @default urlParams.get("id")
+ */
+
+const id = urlParams.get("id");
+
+// let priceCart = 0;
+// let imgCart, altxtCart, nameCart;
 
 /**
  * Fetch qui éxecute une requete GET avec comme paramètre "{productId}" qui est remplacé par l'id du canapé 
@@ -12,13 +24,9 @@ const productId = urlParams.get("id");
  * Deux variables sont ensuite déclarés pour récupérer le prix ensuite l'imagen, le texte alternatif et le nom dans le localStorage
  */
 
-fetch(`http://localhost:3000/api/products/${productId}`)
+fetch(`http://localhost:3000/api/products/${id}`)
     .then((response) => response.json())
-    .then((res) => { console.log(productId)
-        return allDataFromProduct(res);
-    });
-    let priceCart = 0;
-    let imgCart, altxtCart, nameCart;
+    .then((res) => allDataFromProduct(res))
 
 /**
  * Fonction qui incrémente les données necessaire pour le localStorage qui sont "altTxt", "couleur", "description", "image", "nom" et "prix"
@@ -26,16 +34,19 @@ fetch(`http://localhost:3000/api/products/${productId}`)
  */
 
 function allDataFromProduct(product) {
-    const { altTxt, colors, description, imageUrl, name, price} = product;
-    priceCart = price;
-    imgCart = imageUrl;
-    altxtCart = altTxt;
-    nameCart = name;
+    const {altTxt, colors, description, imageUrl, name, price} = product;
+    console.log(product._id);
+    // priceCart = price;
+    // imgCart = imageUrl;
+    // altxtCart = altTxt;
+    // nameCart = name;
     importImage(imageUrl, altTxt);
     importTitle(name);
     importPrice(price);
     importDescription(description);
     importColors(colors);
+    const button = document.querySelector("#addToCart");
+    button.addEventListener("click", () => buyCLick(product));
 }
 
 /**
@@ -104,8 +115,6 @@ function importColors(colors) {
  * ensuite un evenement au click sera affecter à cette constante 
  */
 
-const button = document.querySelector("#addToCart");
-button.addEventListener("click", buyCLick);
 
 /**
  * Fonction qui s'effectue au click, il y est insérer deux constante qui selectionne les valeurs de l'id "#colors" et "#quantity"
@@ -113,33 +122,64 @@ button.addEventListener("click", buyCLick);
  * @returns La fonction "orderInvalid" est retouner si les conditions ne sont pas rempli
  */
 
-function buyCLick() {
+function buyCLick(product) {
     const colors = document.querySelector("#colors").value;
     const quantity = document.querySelector("#quantity").value;
 
     if (orderInvalid(colors, quantity)) return;
-    orderStorage(colors, quantity);
+    orderStorage(colors, quantity, product);
     addProductValid();
 }
 
 /**
- * Fonction qui ajoute la nouvelle clé et sa valeur dans le localStorage. La constante "buyProduct" va récupérer toutes les données du produit
+ * Fonction qui ajoute une clé unique "panier" et sa valeur dans le localStorage. 
+ * La constante "valueKeyStorageProduct" va récupérer les données du produit qui sont propre aux choix de l'utilisateur (id, couleur et quantité)
+ * Si la clé existe "panier", "saveOrderKeyStorage" envoies les données dans le tableau si la clé n'existe pas "saveOrderKeyStorage" crée un tableau et incrémente les données 
  * @param {string} colors Représente la couleur du produit pour ne pas confondre deux produits ayant le même nom 
  * @param {number} quantity Représente la quantité de l'ordre
  */
 
 function orderStorage(colors, quantity) {
-    const newKey = `${productId}:${colors}`;
-    const buyProduct = {
-        id : productId,
-        name : nameCart,
+    const valueKeyStorageProduct = {
+        id : id,
         colors: colors,
-        quantity: Number(quantity),
-        price: priceCart,
-        imageUrl: imgCart,
-        altTxt: altxtCart
+        quantity: Number(quantity)
     };
-    localStorage.setItem(newKey, JSON.stringify(buyProduct));
+
+    let saveOrderKeyStorage = JSON.parse(localStorage.getItem("panier"))
+    
+    if (saveOrderKeyStorage) {
+        // pushOrderStorage(saveOrderKeyStorage, valueKeyStorageProduct)
+        addQuantityForSimilarProduct(valueKeyStorageProduct)   
+    } else{
+        saveOrderKeyStorage = [];
+        pushOrderStorage(saveOrderKeyStorage, valueKeyStorageProduct)
+
+    }
+}
+
+function testOrderStorage(panier) {
+    localStorage.setItem("panier", JSON.stringify(panier))
+}
+
+function pushOrderStorage(saveOrderKeyStorage, valueKeyStorageProduct) {
+    saveOrderKeyStorage.push(valueKeyStorageProduct);
+    localStorage.setItem("panier", JSON.stringify(saveOrderKeyStorage));
+}
+
+function addQuantityForSimilarProduct(valueKeyStorageProduct) {
+    let panier = JSON.parse(localStorage.getItem("panier"));
+    let addProduct = panier.find(p => p.id == valueKeyStorageProduct.id && p.colors == valueKeyStorageProduct.colors);
+    if (addProduct != undefined) {
+        addProduct.quantity++;
+    } else {
+        valueKeyStorageProduct.quantity = 1;
+        panier.push(valueKeyStorageProduct);
+    }
+    testOrderStorage(panier);
+    console.log(panier)
+    console.log(valueKeyStorageProduct.id)
+    console.log(addProduct)
 }
 
 /**
