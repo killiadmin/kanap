@@ -13,7 +13,7 @@ const urlParams = new URLSearchParams(window.location.search);
  * @default urlParams.get("id")
  */
 
-const id = urlParams.get("id");
+const _id = urlParams.get("id");
 
 // let priceCart = 0;
 // let imgCart, altxtCart, nameCart;
@@ -24,7 +24,7 @@ const id = urlParams.get("id");
  * Deux variables sont ensuite déclarés pour récupérer le prix ensuite l'imagen, le texte alternatif et le nom dans le localStorage
  */
 
-fetch(`http://localhost:3000/api/products/${id}`)
+fetch(`http://localhost:3000/api/products/${_id}`)
     .then((response) => response.json())
     .then((res) => allDataFromProduct(res))
 
@@ -141,7 +141,7 @@ function buyCLick(product) {
 
 function orderStorage(colors, quantity) {
     const valueKeyStorageProduct = {
-        id : id,
+        id : _id,
         colors: colors,
         quantity: Number(quantity)
     };
@@ -149,7 +149,6 @@ function orderStorage(colors, quantity) {
     let saveOrderKeyStorage = JSON.parse(localStorage.getItem("panier"))
     
     if (saveOrderKeyStorage) {
-        // pushOrderStorage(saveOrderKeyStorage, valueKeyStorageProduct)
         addQuantityForSimilarProduct(valueKeyStorageProduct)   
     } else{
         saveOrderKeyStorage = [];
@@ -169,7 +168,7 @@ function pushOrderStorage(saveOrderKeyStorage, valueKeyStorageProduct) {
 
 function addQuantityForSimilarProduct(valueKeyStorageProduct) {
     let panier = JSON.parse(localStorage.getItem("panier"));
-    let addProduct = panier.find(p => p.id == valueKeyStorageProduct.id && p.colors == valueKeyStorageProduct.colors);
+    let addProduct = panier.find(p => p._id == valueKeyStorageProduct._id && p.colors == valueKeyStorageProduct.colors);
     if (addProduct != undefined) {
         addProduct.quantity++;
     } else {

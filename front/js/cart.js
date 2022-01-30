@@ -1,147 +1,152 @@
-/**
- * Vue globale sur le total des achats du tableau 
- */
-
-const arrayGlobalFromProduct = [];
-quantityArray();
-arrayGlobalFromProduct.forEach((item) => masterGlobalProduct(item));
-
-/**
- * Fonction qui représente le nombre d'items stockés dans le tableau,
- * une boucle est mise en place pour déterminer la position de l'article ajouter, premier, deuxième etc...  
- */
-
-function quantityArray() {
-    const numberItems = localStorage.length;
-    for (let i = 0; i < numberItems; i++) {
-        const keyElement = localStorage.getItem(localStorage.key(i));
-        const itemElement = JSON.parse(keyElement);
-        arrayGlobalFromProduct.push(itemElement);
-}
-}
-
-/**
- * Fonction qui représente la vue globale du produit, qui est incrémenter d'autres fonctions qui vont lui apporter les données du produit,
- * qui sont la totalité de la balise "article" 
- * @param {object} item Représente un produit
- */
-
-function masterGlobalProduct(item) {
-    const article = createBaliseArticle(item);
-    const divImage = screenImageProduct(item);
-    const cartContent = containerItemContent(item);
-
-    article.appendChild(divImage);
-    article.appendChild(cartContent);
+// function chargement initiale
+// function main() {
+    //     // 1 - chargement des produits depuis API
+    //     const productsAPI = fetchListProducts(); 
+    //     // 2 - Chargement depuis local storage des produits du client
+    //      const selectedProducts = fetchFromLocalStorage();
+    //      // 3 - aggreation des données
+    //      const products = mergeDataProducts(selectedProducts, productsAPI); // Fusionnerr les infos produits dans des objetcs uniques
+    //      // 4 - Créer element visuels à partir du tableau des produits computed
+    //      displayProductItem(products);
+    //      // :)
     
-    appendArticle(article);
-    checkTotalPrice();
-    checkTotalQuantity();
+    //     }
+
+
+    // if (saveOrderKeyStorage === null) {
+        //     const selector = document.querySelector("#cart__items")
+        //     const alert = "Votre panier est vide !"
+    //     selector.innerHTML = alert
+        
+    //     console.log("Le panier est vide !")
+    // } else {
+    // } ;
+
+
+let idProductsForPOST = new Array();
+console.log(idProductsForPOST)
+
+let arrayAllDataProducts = new Array()
+console.log(arrayAllDataProducts)
+
+function main() {
+    const productsAPI = fetchListProducts();
+    productsAPI.then((productsAPI) => {
+        const selectedProducts = fetchFromLocalStorage();
+        const products = mergeDataProducts(selectedProducts, productsAPI);
+        return products
+    });
+};  
+    
+main();
+
+function fetchListProducts () {
+    return fetch("http://localhost:3000/api/products")
+    .then(response => response.json())
+    .then(products => {return (products)})
+    .catch(err => {
+        console.log(err)
+    }); 
+};
+
+function fetchFromLocalStorage() {
+    const valueLocalStorage = JSON.parse(localStorage.getItem("panier"));
+    return valueLocalStorage
 }
 
-/**
- * Fonction qui crée l'élement "article", la classe ".cart__item" lui est attribuer, on affecte l'id à la "data-id" que la couleur à la "data-color"
- * @param {object} item Représente un produit
- * @returns Retourne le contenu de l'article
- */
+function mergeDataProducts(selectedProducts, productsAPI) {
+    selectedProducts.forEach(element => {
+        const arrayConcatSelectedAndAPI = productsAPI.concat(selectedProducts)        
+        const product = arrayConcatSelectedAndAPI.find(prod => prod._id == element.id)
+        
+        const dataProduct = {...product, ...element}
+        
+        displayProductItem(dataProduct)
+    });
+}
 
-function createBaliseArticle(item) {
+//====================================================================================================================================
+
+
+function displayProductItem(dataProduct) {
+    const article = createBaliseArticle(dataProduct);
+    const displayImage = screenImageProduct(dataProduct);
+    const cartItemContent = containerItemContent(dataProduct)
+
+    // checkTotalPrice();
+    // checkTotalQuantity();
+
+    article.appendChild(displayImage);
+    article.appendChild(cartItemContent);
+
+    console.log(dataProduct);
+}
+
+function createBaliseArticle(dataProduct) {
     const article = document.createElement("article");
     article.classList.add("cart__item");
-    article.dataset.id = item.id;
-    article.dataset.colors = item.colors;
+    article.dataset.id = dataProduct.id;
+    article.dataset.colors = dataProduct.colors;
+    appendArticle(article);
+    console.log(article)
     return article;
 }
-/**
- * Fonction qui selectionne l'id "#cart__items" pour lui attribuer comme enfant "article"
- * @param {object} article Représente l'article
- */
 
 function appendArticle(article) {
     document.querySelector("#cart__items").appendChild(article);
 }
 
-/**
- * Fonction qui crée la "div" contenant l'image, on va lui attribuer la classe "cart__item__img",
- * crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la "div" son enfant "img"
- * @param {object} item Représente le produit
- * @returns Retourne la "div" contenant l'image
- */
-
-function screenImageProduct(item) {
+function screenImageProduct(dataProduct) {
     const divImage = document.createElement("div");
     divImage.classList.add("cart__item__img");
     const image = document.createElement("img");
-    image.src = item.imageUrl;
-    image.alt = item.altTxt;
+    image.src = dataProduct.imageUrl;
+    image.alt = dataProduct.altTxt;
     divImage.appendChild(image);
+    console.log(divImage)
     return divImage;
 }
 
-/**
- * Fonction qui crée la "div, cart__item__content" qui va contenir la description, la quantité et l'option "supprimer"
- * @param {object} item Représente le produit
- * @returns Retourne la description et les settings(quantité + supprimer)
- */
-
-function containerItemContent(item) {
+function containerItemContent(dataProduct) {
     const divCartContentMaster = document.createElement("div");
     divCartContentMaster.classList.add("cart__item__content");
-
-    const contentDescription = itemContentDescription(item);
-    const contentSettings = itemContentSettings(item);
-
+    
+    const contentDescription = itemContentDescription(dataProduct);
+    const contentSettings = itemContentSettings(dataProduct);
+    
     divCartContentMaster.appendChild(contentDescription);
     divCartContentMaster.appendChild(contentSettings);
     return divCartContentMaster;
 }
 
-/**
- * Fonction qui crée la "div cart__item__content__description" qui va contenir le "h2" le "p" de quantité et le "p" du prix qui va contenir leur données respective
- * @param {object} item Représente le produit
- * @returns La description du produit (Nom, couleur et prix)
- */
-
-function itemContentDescription(item) {
+function itemContentDescription(dataProduct) {
     const divCartContentDescription = document.createElement("div");
     divCartContentDescription.classList.add("cart__item__content__description");
     
     const titleh2 = document.createElement("h2");
-    titleh2.textContent = item.name;
+    titleh2.textContent = dataProduct.name;
     const balisePcolors = document.createElement("p");
-    balisePcolors.textContent = item.colors;
+    balisePcolors.textContent = dataProduct.colors;
     const balisePPrice = document.createElement("p");
-    balisePPrice.textContent = item.price + " €";
-    
+    balisePPrice.textContent = dataProduct.price + " " +"€";
+
     divCartContentDescription.appendChild(titleh2);
     divCartContentDescription.appendChild(balisePcolors);
     divCartContentDescription.appendChild(balisePPrice);
+
     return divCartContentDescription;
 }
 
-/**
- * Fonction qui crée la "div cart__item__content__settings" qui a été incrémenter de deux fonctions (itemContentQuantity et itemContentDelete)
- * @param {*} item Représente le produit
- * @returns Retourne les fonctions pour qui contienne la quantité et l'option supprimer
- */
-
-function itemContentSettings(item) {
+function itemContentSettings(dataProduct) {
     const divCartContentSettings = document.createElement("div");
     divCartContentSettings.classList.add("cart__item__content__settings");
 
-    itemContentQuantity(divCartContentSettings, item);
-    itemContentDelete(divCartContentSettings, item);
+    itemContentQuantity(divCartContentSettings, dataProduct);
+    itemContentDelete(divCartContentSettings, dataProduct);
     return divCartContentSettings;    
 }
 
-/**
- * Fonction qui crée la "div, cart__item__content__settings__quantity", qui crée ensuite la balise "p" qui va contenir du texte "Qté :";
- * l'élément "input, itemQuantity" est crée pour que l'utilisateur puisse choisir la quantité qu'il souhaite ajouter sous certaines conditions
- * @param {object} divCartContentSettings Représente la quantité + l'option supprimer
- * @param {object} item Représente le produit
- */
-
-function itemContentQuantity(divCartContentSettings,item) {
+function itemContentQuantity(divCartContentSettings, dataProduct) {
     const divQuantity = document.createElement("div");
     divQuantity.classList.add("cart__item__content__settings__quantity");
     
@@ -154,138 +159,85 @@ function itemContentQuantity(divCartContentSettings,item) {
     inputQuantity.name = "itemQuantity";
     inputQuantity.min = "1";
     inputQuantity.max = "100";
-    inputQuantity.value = item.quantity;
-
-    inputQuantity.addEventListener("change", () => newQuantityAndPrice(item.id, inputQuantity.value, item));
+    inputQuantity.setAttribute("value", dataProduct.quantity);
     
+    // inputQuantity.addEventListener("input", () => newQuantityAndPrice(item.id, inputQuantity.value, item));
+    
+    divQuantity.appendChild(balisePQuantity);
     divQuantity.appendChild(inputQuantity);
     divCartContentSettings.appendChild(divQuantity);
 }
 
-/**
- * Fonction qui crée la "div, cart__item__content__settings__delete", la balise "p, deleteItem" lui est incrémenter
- * Un évenement au click lui est attribuer à la "div" pour pouvoir supprimer le produit
- * @param {object} divCartContentSettings Représente la quantité + l'option supprimer
- * @param {object} item Représente le produit
- */
-
-function itemContentDelete(divCartContentSettings,item) {
+function itemContentDelete(divCartContentSettings, dataProduct) {
     const divDelete = document.createElement("div");
     divDelete.classList.add("cart__item__content__settings__delete");
     
     const balisePDelete = document.createElement("p");
     balisePDelete.classList.add("deleteItem");
     balisePDelete.textContent = ("Supprimer");
-
-    divDelete.addEventListener("click", () => divDeleteEvent(item));
-
+    
+    // divDelete.addEventListener("click", () => divDeleteEvent(dataProduct));
+    
     divDelete.appendChild(balisePDelete);
     divCartContentSettings.appendChild(divDelete);
 } 
 
-/**
- * Fonction qui représente l'évenement au click de la suppression du produit, on utilise "findIndex" pour renvoyer le premier élement du tableau
- * On utilise ensuite "splice" pour modifier le contenu du tableau "arrayGlobalFromProduct"
- * On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppression du produit dans le storage + sur la page  
- * @param {object} item Réprésente le produit
- */
-
-function divDeleteEvent(item) {
-    const itemDelete = arrayGlobalFromProduct.findIndex(
-        (product) => product.id === item.id && product.colors === item.colors);
-    arrayGlobalFromProduct.splice(itemDelete, 1);
-
-    checkTotalQuantity();
-    checkTotalPrice();
-    removeItemFromStorage(item);
-    removeItemFromPage(item);
-}
+//EVENT LISTENER DELETE
+function divDeleteEvent(dataProduct) {
+    const itemDelete = saveOrderKeyStorage.filter(e => e.id !== dataProduct.id || e.colors !== dataProduct.colors);
     
-/**
- * Fonction qui selectionne l'id et la couleur du produit. On utilise ensuite "removeItem" pour supprimer la clé en argument
- * @param {object} item Représente le produit
- */
-
-function removeItemFromStorage(item) {
-    const localStoragekey = `${item.id}:${item.colors}`;
-    localStorage.removeItem(localStoragekey);
+    localStorage.setItem("panier", JSON.stringify(itemDelete));
+    
+    // checkTotalQuantity(item);
+    // checkTotalPrice();
+    removeItemFromPage(dataProduct);
 }
 
-/**
- * Fonction qui va chercher les selecteurs "data-id + data-colors" dans le cart.html
- * On utilise ensuite "remove" pour supprimer l'élement
- * @param {object} item Représente le produit
- */
+function removeItemFromPage(dataProduct) {
+    const itemDelete = document.querySelector(`article[data-id="${dataProduct.id}"][data-colors="${dataProduct.colors}"]`);
+    itemDelete.remove();
+}
 
-function removeItemFromPage(item) {
-        const itemDelete = document.querySelector(`article[data-id="${item.id}"][data-colors="${item.colors}"]`);
-        itemDelete.remove();
-    }
+// function checkTotalQuantity() {
+//     let total = 0;
+//     const totalQuantity = document.querySelector("#totalQuantity");
+    
+//     saveOrderKeyStorage.forEach((item) => {
+//         total += item.quantity;
+//         console.log(item)               
+//     totalQuantity.textContent = total;
+// })
+// }
+    
+// function checkTotalPrice(products) {
+//     let total = 0;
+//     const totalPrice = document.querySelector("#totalPrice");
 
-/**
- * Fonction qui va chercher le selecteur "#totalQuantity", on utilise ensuite une loop direct. Cette boucle va additionner la quantité au total des produits
- * L'évenement au click sur l'option "supprimer" influencera le total de la quantité 
- */
+//     // saveOrderKeyStorage.forEach((item) => {
+//     //         const allProducts = products.find(p => p._id == item.id);
+//     //         const totalGlobalPrice = allProducts.price * item.quantity ;
+//     //         total = total + totalGlobalPrice;
+//     //         console.log(allProducts)
+//     //     })
+    
+//         totalPrice.textContent = total;
+//     }
 
-function checkTotalQuantity() {
-        let total = 0
-        const totalQuantity = document.querySelector("#totalQuantity");
+// function newQuantityAndPrice(id, newValue, item) {
+//     const newItemToBuy = saveOrderKeyStorage.find((item) => item.id === id);
+        
+//         newItemToBuy.quantity = Number(newValue);
+//         item.quantity = newItemToBuy.quantity;
 
-        arrayGlobalFromProduct.forEach((item) => {
-            const totalGlobalQuantity = item.quantity;
-            total = total + totalGlobalQuantity;
-        })
+//         checkTotalPrice();
+//         checkTotalQuantity(item);
+//         // saveNewPriceAndQuantity(item);
+// }
 
-        totalQuantity.textContent = total;
-    }
-
-/**
- * Fonction qui va chercher le selecteur "#totalPrice", on utilise ensuite une loop direct. Cette boucle va multiplié le prix suivant la quantité selectionner
- * L'évenement au click sur l'option "supprimer" influencera le total du prix
- */
-
-function checkTotalPrice() {
-    let total = 0;
-    const totalPrice = document.querySelector("#totalPrice");
-
-    arrayGlobalFromProduct.forEach((item) => {
-        const totalGlobalPrice = item.price * item.quantity ;
-        total = total + totalGlobalPrice;
-    })
-
-    totalPrice.textContent = total;
-    }
-
-/**
- * Fonction qui représente la nouvelle quantité et le nouveau prix. On utilise find pour renvoyer la valeur du premier élement trouvé
- * @param {object} id Représente l'id du produit
- * @param {number} newValue Représente le nouveau prix du produit acheté
- * @param {object} item Représente le produit
- */
-
-function newQuantityAndPrice(id, newValue, item) {
-        const newItemToBuy = arrayGlobalFromProduct.find((item) => item.id === id);
-
-        newItemToBuy.quantity = Number(newValue);
-        item.quantity = newItemToBuy.quantity;
-
-        checkTotalPrice();
-        checkTotalQuantity();
-        saveNewPriceAndQuantity(item);
-    }
-
-/**
- * Fonction  qui va actualiser dans le local storage la clé qui a été ajouter auparavant avec la fonction "orderStorage" dans product.js 
- * sous la forme de "id (Nom du canapé) : colors (La couleur)"
- * @param {object} item Représente le produit
- */
-
-function saveNewPriceAndQuantity(item) {
-        const newSaveData = JSON.stringify(item);
-        const newKey = `${item.id}:${item.colors}`;
-
-        localStorage.setItem(newKey, newSaveData);
-    }
+// function saveNewPriceAndQuantity(panier) {
+//     localStorage.setItem("panier", JSON.stringify(panier));        
+//         console.log(localStorage)
+//     }
 
 //==================================================================================================================================== 
 
@@ -293,16 +245,19 @@ function saveNewPriceAndQuantity(item) {
  * On selectionne l'id #order pour lui attribuer un évenement au click pour agir sur le formulaire 
  */
 
-    const buttonOrder = document.querySelector("#order");
-    buttonOrder.addEventListener("click", (e) => formRequestPost(e));
+const buttonOrder = document.querySelector("#order");
+buttonOrder.addEventListener("click", (e) => formRequestPost(e));
 
 /**
  * Fonction qui envoie une requete POST avec Fetch à l'url de l'api, (alerte) si le tableau est de 0 produit, la requete ne s'effectue pas.   
  * @param {boolean} e Si le tableau est vide, le changement de page ne s'effectue pas
  */
+
 function formRequestPost(e) {
+        if (checkedFormInvalid()) return
+        if (checkedMailValid()) return
         e.preventDefault();
-        if (arrayGlobalFromProduct.length === 0) alert("Votre panier est vide !");
+//         if (saveOrderKeyStorage.length === 0) alert("Votre panier est vide !");
 
         const body = requestControllers();
 
@@ -314,14 +269,21 @@ function formRequestPost(e) {
             }
         })
             .then((response) => response.json())
-            .then((data) => console.log(data)) 
+            .then((data) => {
+                // window.location = `../html/confirmation.html?id=${data.orderId}`;
+                return console.log(data);
+            }) 
+            .catch((err) => console.log(err))
     }
 
-/**
- * Fonction qui agit sur la class ".cart__order__form", on utilise HTMLFormElement pour retourner HTMLFormControlCollection
- * On récupère les valeurs du tableau avec "value", on ajoute l'objet contact et la fonction va nous récupérer l'id
- * @returns L'objet contact avec ses données le tableau products
- */
+// function selectIdFromRequestPost() {
+//         dataProduct.forEach(element => {
+//         const orderId = element._id
+//         arrayAllProducts.push(orderId)
+//     });
+// }
+
+// selectIdFromRequestPost()
 
 function requestControllers() {
         const cartForm = document.querySelector(".cart__order__form");
@@ -339,27 +301,32 @@ function requestControllers() {
             city: city,
             email: email 
         },
-
-        products: idOrders()      
+        products: idProductsForPOST   
          }
+         console.log(body)
          return body;
     }        
     
-/**
- * Fonction qui va récupérer le nombre d'item stockés dans le storageL
- * La boucle va récupérer la clé dans le storage, on utilise split pour selectionner uniquement la couleur dans l'id, on push pour finir dans le tableau "arrayProducts" 
- * @returns Le tableau avec son id
- */
-
-function idOrders() {
-    const numberProducts = localStorage.length;
-    const arrayProducts = [];
-
-    for (let i = 0; i < numberProducts; i++) {
-        const products = localStorage.key(i);
-        const id = products.split(":")[0];
-        arrayProducts.push(id);
-    }
-
-    return arrayProducts;
+function checkedMailValid() {
+    const email = document.querySelector("#email").value
+    const validRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+    if (validRegex.test(email) === false) {
+        alert("Veuillez saisir un mail valide !")
+        return true
+    } else {
+        return false
+    }    
 }
+    
+function checkedFormInvalid() {
+    const form =  document.querySelector(".cart__order__form")
+    const baliseInput = form.querySelectorAll("input")
+    baliseInput.forEach((baliseInput) => {
+        if (baliseInput.value === "") {
+            alert("Veuillez saisir les champs manquant !")
+            return true
+        } else {
+            return false
+        }
+    })
+    }
