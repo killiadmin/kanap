@@ -21,50 +21,53 @@
     //     console.log("Le panier est vide !")
     // } else {
     // } ;
-
-
-let idProductsForPOST = new Array();
-console.log(idProductsForPOST)
-
-let arrayAllDataProducts = new Array()
-console.log(arrayAllDataProducts)
-
-function main() {
-    const productsAPI = fetchListProducts();
-    productsAPI.then((productsAPI) => {
-        const selectedProducts = fetchFromLocalStorage();
-        const products = mergeDataProducts(selectedProducts, productsAPI);
-        return products
-    });
-};  
     
-main();
+    
+    let idProductsForPOST = new Array();
+    console.log(idProductsForPOST)
+    
+    let arrayAllDataProducts = new Array()
+    console.log(arrayAllDataProducts)
 
-function fetchListProducts () {
-    return fetch("http://localhost:3000/api/products")
-    .then(response => response.json())
-    .then(products => {return (products)})
-    .catch(err => {
-        console.log(err)
-    }); 
-};
-
-function fetchFromLocalStorage() {
-    const valueLocalStorage = JSON.parse(localStorage.getItem("panier"));
-    return valueLocalStorage
-}
-
-function mergeDataProducts(selectedProducts, productsAPI) {
-    selectedProducts.forEach(element => {
-        const arrayConcatSelectedAndAPI = productsAPI.concat(selectedProducts)        
-        const product = arrayConcatSelectedAndAPI.find(prod => prod._id == element.id)
-        
-        const dataProduct = {...product, ...element}
-        
-        displayProductItem(dataProduct)
-    });
-}
-
+    let arrayLocalStorage = JSON.parse(localStorage.getItem("panier"));
+    console.log(arrayLocalStorage)
+    
+    function main() {
+        const productsAPI = fetchListProducts();
+        productsAPI.then((productsAPI) => {
+            const selectedProducts = fetchFromLocalStorage();
+            const products = mergeDataProducts(selectedProducts, productsAPI);
+            return products
+        });
+    };  
+    
+    main();
+    
+    function fetchListProducts () {
+        return fetch("http://localhost:3000/api/products")
+        .then(response => response.json())
+        .then(products => {return (products)})
+        .catch(err => {
+            console.log(err)
+        }); 
+    };
+    
+    function fetchFromLocalStorage() {
+        const valueLocalStorage = JSON.parse(localStorage.getItem("panier"));
+        return valueLocalStorage
+    }
+    
+    function mergeDataProducts(selectedProducts, productsAPI) {
+        selectedProducts.forEach(element => {
+            const arrayConcatSelectedAndAPI = productsAPI.concat(selectedProducts)        
+            const product = arrayConcatSelectedAndAPI.find(prod => prod._id == element.id)
+            
+            const dataProduct = {...product, ...element}
+            
+            displayProductItem(dataProduct)
+        });
+    }
+    
 //====================================================================================================================================
 
 
@@ -78,8 +81,6 @@ function displayProductItem(dataProduct) {
 
     article.appendChild(displayImage);
     article.appendChild(cartItemContent);
-
-    console.log(dataProduct);
 }
 
 function createBaliseArticle(dataProduct) {
@@ -88,7 +89,6 @@ function createBaliseArticle(dataProduct) {
     article.dataset.id = dataProduct.id;
     article.dataset.colors = dataProduct.colors;
     appendArticle(article);
-    console.log(article)
     return article;
 }
 
@@ -103,7 +103,6 @@ function screenImageProduct(dataProduct) {
     image.src = dataProduct.imageUrl;
     image.alt = dataProduct.altTxt;
     divImage.appendChild(image);
-    console.log(divImage)
     return divImage;
 }
 
@@ -176,26 +175,25 @@ function itemContentDelete(divCartContentSettings, dataProduct) {
     balisePDelete.classList.add("deleteItem");
     balisePDelete.textContent = ("Supprimer");
     
-    // divDelete.addEventListener("click", () => divDeleteEvent(dataProduct));
+    divDelete.addEventListener("click", () => divDeleteEvent(dataProduct));
     
     divDelete.appendChild(balisePDelete);
     divCartContentSettings.appendChild(divDelete);
 } 
 
-//EVENT LISTENER DELETE
+function removeItemFromPage(dataProduct) {
+    const itemDelete = document.querySelector(`article[data-id="${dataProduct.id}"][data-colors="${dataProduct.colors}"]`);
+    itemDelete.remove();
+}
+
 function divDeleteEvent(dataProduct) {
-    const itemDelete = saveOrderKeyStorage.filter(e => e.id !== dataProduct.id || e.colors !== dataProduct.colors);
+    const itemDelete = arrayLocalStorage.filter(e => e.id !== dataProduct.id || e.colors !== dataProduct.colors);
     
     localStorage.setItem("panier", JSON.stringify(itemDelete));
     
     // checkTotalQuantity(item);
     // checkTotalPrice();
     removeItemFromPage(dataProduct);
-}
-
-function removeItemFromPage(dataProduct) {
-    const itemDelete = document.querySelector(`article[data-id="${dataProduct.id}"][data-colors="${dataProduct.colors}"]`);
-    itemDelete.remove();
 }
 
 // function checkTotalQuantity() {
@@ -248,85 +246,171 @@ function removeItemFromPage(dataProduct) {
 const buttonOrder = document.querySelector("#order");
 buttonOrder.addEventListener("click", (e) => formRequestPost(e));
 
+const errorFirstName = document.querySelector("#firstNameErrorMsg")
+const errorLastName = document.querySelector("#lastNameErrorMsg")
+const errorAddress = document.querySelector("#addressErrorMsg")
+const errorCity = document.querySelector("#cityErrorMsg")
+const errorEmail = document.querySelector("#emailErrorMsg")
+
+const form =  document.querySelector(".cart__order__form")
+const baliseInput = form.querySelectorAll("input")
+
+const regexFirsLastName = (value) => {
+    return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
+}
+const regexCity = (value) => {
+    return /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(value);
+}
+
+const regexEmail = (value) => {
+    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
+}
+
+const regexAdress = (value) => {
+    return /^[0-9]{1,4}[ ,-][ A-Za-zÀ-ÿ0-9\-]+$/.test(value);
+}
+
+
 /**
  * Fonction qui envoie une requete POST avec Fetch à l'url de l'api, (alerte) si le tableau est de 0 produit, la requete ne s'effectue pas.   
  * @param {boolean} e Si le tableau est vide, le changement de page ne s'effectue pas
  */
 
 function formRequestPost(e) {
-        if (checkedFormInvalid()) return
-        if (checkedMailValid()) return
-        e.preventDefault();
-//         if (saveOrderKeyStorage.length === 0) alert("Votre panier est vide !");
-
-        const body = requestControllers();
-
-        fetch("http://localhost:3000/api/products/order", {
-            method : "POST",
-            body : JSON.stringify(body),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // window.location = `../html/confirmation.html?id=${data.orderId}`;
-                return console.log(data);
-            }) 
-            .catch((err) => console.log(err))
-    }
-
-// function selectIdFromRequestPost() {
-//         dataProduct.forEach(element => {
-//         const orderId = element._id
-//         arrayAllProducts.push(orderId)
-//     });
-// }
-
-// selectIdFromRequestPost()
-
-function requestControllers() {
-        const cartForm = document.querySelector(".cart__order__form");
-
-        const firstName = cartForm.elements.firstName.value;
-        const lastName = cartForm.elements.lastName.value;
-        const address = cartForm.elements.address.value;
-        const city = cartForm.elements.city.value;
-        const email = cartForm.elements.email.value;
-        const body = { 
-        contact: {
-            firstName: firstName,
-            lastName: lastName,
-            address: address,
-            city: city,
-            email: email 
-        },
-        products: idProductsForPOST   
-         }
-         console.log(body)
-         return body;
-    }        
+    e.preventDefault();
     
-function checkedMailValid() {
-    const email = document.querySelector("#email").value
-    const validRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-    if (validRegex.test(email) === false) {
-        alert("Veuillez saisir un mail valide !")
-        return true
+    // if (checkedFirstNameInvalid()) return
+    // if(checkedLastNameInvalid()) return
+    // if (checkedAdressInvalid()) return
+    // if (checkedCityInvalid()) return
+    // if (checkedMailInvalid()) return
+
+
+    
+    if (checkedLastNameInvalid() && checkedFirstNameInvalid() && checkedAdressInvalid() && checkedCityInvalid() && checkedMailInvalid() && checkedQuantityLocalStorage()){  
+    const body = requestControllers();
+    return body;
     } else {
-        return false
-    }    
-}
+        alert("Votre formulaire est incomplet !");
+    };
     
-function checkedFormInvalid() {
-    const form =  document.querySelector(".cart__order__form")
-    const baliseInput = form.querySelectorAll("input")
-    baliseInput.forEach((baliseInput) => {
-        if (baliseInput.value === "") {
-            alert("Veuillez saisir les champs manquant !")
-            return true
-        } else {
-            return false
+    
+    fetch("http://localhost:3000/api/products/order", {
+        method : "POST",
+        body : JSON.stringify(body),
+        headers: {
+            "Content-Type": "application/json"
         }
     })
-    }
+    .then((response) => response.json())
+    .then((data) => {
+        // window.location = `../html/confirmation.html?id=${data.orderId}`;
+        return console.log(data);
+    }) 
+    .catch((err) => console.log(err))
+}
+
+function selectIdFromRequestPost() {
+    arrayLocalStorage.forEach(element => {
+        const orderId = element.id
+        idProductsForPOST.push(orderId)
+    });
+}
+
+selectIdFromRequestPost()
+
+function requestControllers() {
+    const cartForm = document.querySelector(".cart__order__form");
+
+    const firstName = cartForm.elements.firstName.value;
+    const lastName = cartForm.elements.lastName.value;
+    const address = cartForm.elements.address.value;
+    const city = cartForm.elements.city.value;
+    const email = cartForm.elements.email.value;
+    const body = { 
+    contact: {
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        city: city,
+        email: email 
+    },
+    products: idProductsForPOST   
+     }
+     console.log(body)
+     return body;
+}
+
+function checkedQuantityLocalStorage() {
+    if (arrayLocalStorage.length === 0){
+        alert("Votre panier est vide !");
+        return false;
+    } else {
+        return true;
+    };      
+};
+    
+function checkedMailInvalid() {
+    const selectorIdEmail = document.querySelector("#email").value;
+
+    if (regexEmail(selectorIdEmail)) {
+        errorEmail.innerHTML = "";
+        return true;
+    } else {
+        errorEmail.innerHTML = "Veuillez saisir un mail valide !";
+        return false;
+    };    
+};
+
+function checkedFirstNameInvalid() {
+    const selectorIdFirstName = document.querySelector("#firstName").value;
+    const selectorLength = selectorIdFirstName.length;
+
+    if (selectorLength < 3 || selectorLength > 20) {
+        errorFirstName.innerHTML = "Veuillez écrire votre prénom entre 3 et 20 caractères!";
+        return false;
+    } else if (regexFirsLastName(selectorIdFirstName)) {
+        errorFirstName.innerHTML = "";
+        return true;
+    } else {
+        errorFirstName.innerHTML = "Veuillez écrire votre prénom sans caractère spéciaux, ni de chiffres !";   
+        return false;
+    };
+};
+
+function checkedLastNameInvalid() {
+    const selectorIdLastName = document.querySelector("#lastName").value;
+
+    if (regexFirsLastName(selectorIdLastName)) {
+        errorLastName.innerHTML = "";
+        return true;
+    } else {
+        errorLastName.innerHTML = "Veuillez écrire correctement votre nom !";
+
+        return false;
+    };
+};
+
+function checkedAdressInvalid() {
+    const selectorIdAddress = document.querySelector("#address").value;
+
+    if (regexAdress(selectorIdAddress)) {
+        errorAddress.innerHTML = "";
+        return true;
+    } else {
+        errorAddress.innerHTML = "Veuillez saisir une adresse postale valide !";
+        return false;
+    };
+};
+
+function checkedCityInvalid() {
+    const selectorIdCity = document.querySelector("#city").value;
+
+    if (regexCity(selectorIdCity)) {
+        errorCity.innerHTML = "";
+        return true;
+    } else {
+        errorCity.innerHTML = "Veuillez saisir une ville valide !";
+        return false;
+    };
+};
