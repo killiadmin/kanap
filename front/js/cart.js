@@ -10,18 +10,7 @@
     //      displayProductItem(products);
     //      // :)
     
-    //     }
-
-
-    // if (saveOrderKeyStorage === null) {
-        //     const selector = document.querySelector("#cart__items")
-        //     const alert = "Votre panier est vide !"
-    //     selector.innerHTML = alert
-        
-    //     console.log("Le panier est vide !")
-    // } else {
-    // } ;
-    
+    //     }   
     
     let idProductsForPOST = new Array();
     console.log(idProductsForPOST)
@@ -63,6 +52,7 @@
             const product = arrayConcatSelectedAndAPI.find(prod => prod._id == element.id)
             
             const dataProduct = {...product, ...element}
+            arrayAllDataProducts.push(dataProduct)
             
             displayProductItem(dataProduct)
         });
@@ -76,8 +66,8 @@ function displayProductItem(dataProduct) {
     const displayImage = screenImageProduct(dataProduct);
     const cartItemContent = containerItemContent(dataProduct)
 
-    // checkTotalPrice();
-    // checkTotalQuantity();
+    checkTotalPrice();
+    checkTotalQuantity();
 
     article.appendChild(displayImage);
     article.appendChild(cartItemContent);
@@ -191,35 +181,25 @@ function divDeleteEvent(dataProduct) {
     
     localStorage.setItem("panier", JSON.stringify(itemDelete));
     
-    // checkTotalQuantity(item);
+    // checkTotalQuantity(dataProduct);
     // checkTotalPrice();
     removeItemFromPage(dataProduct);
 }
 
-// function checkTotalQuantity() {
-//     let total = 0;
-//     const totalQuantity = document.querySelector("#totalQuantity");
+function checkTotalQuantity() {
+    const totalQuantity = document.querySelector("#totalQuantity");
+    const totalQ = arrayAllDataProducts.reduce((totalQ, dataProduct) => totalQ + dataProduct.quantity, 0);
+            
+    totalQuantity.textContent = totalQ;
+}
     
-//     saveOrderKeyStorage.forEach((item) => {
-//         total += item.quantity;
-//         console.log(item)               
-//     totalQuantity.textContent = total;
-// })
-// }
-    
-// function checkTotalPrice(products) {
-//     let total = 0;
-//     const totalPrice = document.querySelector("#totalPrice");
+function checkTotalPrice() {
+    const totalPrice = document.querySelector("#totalPrice");
+    const totalP = arrayAllDataProducts.reduce((totalP, dataProduct) => totalP + dataProduct.price * dataProduct.quantity, 0);
 
-//     // saveOrderKeyStorage.forEach((item) => {
-//     //         const allProducts = products.find(p => p._id == item.id);
-//     //         const totalGlobalPrice = allProducts.price * item.quantity ;
-//     //         total = total + totalGlobalPrice;
-//     //         console.log(allProducts)
-//     //     })
+    totalPrice.textContent = totalP;
+}
     
-//         totalPrice.textContent = total;
-//     }
 
 // function newQuantityAndPrice(id, newValue, item) {
 //     const newItemToBuy = saveOrderKeyStorage.find((item) => item.id === id);
@@ -278,14 +258,6 @@ const regexAdress = (value) => {
 
 function formRequestPost(e) {
     e.preventDefault();
-    
-    // if (checkedFirstNameInvalid()) return
-    // if(checkedLastNameInvalid()) return
-    // if (checkedAdressInvalid()) return
-    // if (checkedCityInvalid()) return
-    // if (checkedMailInvalid()) return
-
-
     
     if (checkedLastNameInvalid() && checkedFirstNameInvalid() && checkedAdressInvalid() && checkedCityInvalid() && checkedMailInvalid() && checkedQuantityLocalStorage()){  
     const body = requestControllers();

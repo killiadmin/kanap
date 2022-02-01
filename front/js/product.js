@@ -168,7 +168,8 @@ function pushOrderStorage(saveOrderKeyStorage, valueKeyStorageProduct) {
 
 function addQuantityForSimilarProduct(valueKeyStorageProduct) {
     let panier = JSON.parse(localStorage.getItem("panier"));
-    let addProduct = panier.find(p => p._id == valueKeyStorageProduct._id && p.colors == valueKeyStorageProduct.colors);
+    let addProduct = panier.find(p => p.id == valueKeyStorageProduct.id && p.colors == valueKeyStorageProduct.colors);
+
     if (addProduct != undefined) {
         addProduct.quantity++;
     } else {
@@ -200,5 +201,5 @@ function orderInvalid(colors, quantity) {
  */
 
 function addProductValid() {
-    window.location.href = "cart.html";
+    // window.location.href = "cart.html";
 }
