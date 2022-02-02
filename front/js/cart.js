@@ -15,7 +15,7 @@
     let idProductsForPOST = new Array();
     console.log(idProductsForPOST)
     
-    let arrayAllDataProducts = new Array()
+    let arrayAllDataProducts = new Array();
     console.log(arrayAllDataProducts)
 
     let arrayLocalStorage = JSON.parse(localStorage.getItem("panier"));
@@ -58,17 +58,17 @@
         });
     }
     
-//====================================================================================================================================
-
-
+    //====================================================================================================================================
+    
+    
 function displayProductItem(dataProduct) {
     const article = createBaliseArticle(dataProduct);
     const displayImage = screenImageProduct(dataProduct);
     const cartItemContent = containerItemContent(dataProduct)
-
+    
     checkTotalPrice();
     checkTotalQuantity();
-
+    
     article.appendChild(displayImage);
     article.appendChild(cartItemContent);
 }
@@ -150,7 +150,7 @@ function itemContentQuantity(divCartContentSettings, dataProduct) {
     inputQuantity.max = "100";
     inputQuantity.setAttribute("value", dataProduct.quantity);
     
-    // inputQuantity.addEventListener("input", () => newQuantityAndPrice(item.id, inputQuantity.value, item));
+    inputQuantity.addEventListener("input", () => newQuantityAndPrice(dataProduct, inputQuantity.value));
     
     divQuantity.appendChild(balisePQuantity);
     divQuantity.appendChild(inputQuantity);
@@ -169,21 +169,24 @@ function itemContentDelete(divCartContentSettings, dataProduct) {
     
     divDelete.appendChild(balisePDelete);
     divCartContentSettings.appendChild(divDelete);
-} 
+}
 
 function removeItemFromPage(dataProduct) {
     const itemDelete = document.querySelector(`article[data-id="${dataProduct.id}"][data-colors="${dataProduct.colors}"]`);
-    itemDelete.remove();
+        itemDelete.remove();
+        location.reload();     
 }
 
 function divDeleteEvent(dataProduct) {
+    if (window.confirm(`Voulez-vous vraiment supprimer cette article du panier ?`)) {
     const itemDelete = arrayLocalStorage.filter(e => e.id !== dataProduct.id || e.colors !== dataProduct.colors);
     
     localStorage.setItem("panier", JSON.stringify(itemDelete));
     
-    // checkTotalQuantity(dataProduct);
-    // checkTotalPrice();
+    checkTotalQuantity();
+    checkTotalPrice();
     removeItemFromPage(dataProduct);
+    }
 }
 
 function checkTotalQuantity() {
@@ -200,23 +203,14 @@ function checkTotalPrice() {
     totalPrice.textContent = totalP;
 }
     
+function newQuantityAndPrice(dataProduct, newValue) {
+    const productWantTochange = arrayAllDataProducts.find((product) => product.id === dataProduct.id && product.colors === dataProduct.colors);
+    productWantTochange.quantity = Number(newValue)
+    checkTotalQuantity();
+    checkTotalPrice();
 
-// function newQuantityAndPrice(id, newValue, item) {
-//     const newItemToBuy = saveOrderKeyStorage.find((item) => item.id === id);
-        
-//         newItemToBuy.quantity = Number(newValue);
-//         item.quantity = newItemToBuy.quantity;
-
-//         checkTotalPrice();
-//         checkTotalQuantity(item);
-//         // saveNewPriceAndQuantity(item);
-// }
-
-// function saveNewPriceAndQuantity(panier) {
-//     localStorage.setItem("panier", JSON.stringify(panier));        
-//         console.log(localStorage)
-//     }
-
+    localStorage.setItem("panier", JSON.stringify(arrayAllDataProducts));
+}
 //==================================================================================================================================== 
 
 /**
