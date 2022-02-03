@@ -199,8 +199,8 @@ function orderInvalid(colors, quantity) {
     if (colors == null || colors === '' || quantity == null || quantity == 0) {
         alert("Select your color and quantity");
         return true;
-    } else if (quantity > 100) {
-        alert("Select your quantity below 100");
+    } else if (quantity > 100 || quantity < 0) {
+        alert("Select your quantity between 0 and 100");
         return true;
     };
 };
