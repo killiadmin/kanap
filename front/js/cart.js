@@ -1,38 +1,36 @@
-// function chargement initiale
-// function main() {
-    //     // 1 - chargement des produits depuis API
-    //     const productsAPI = fetchListProducts(); 
-    //     // 2 - Chargement depuis local storage des produits du client
-    //      const selectedProducts = fetchFromLocalStorage();
-    //      // 3 - aggreation des données
-    //      const products = mergeDataProducts(selectedProducts, productsAPI); // Fusionnerr les infos produits dans des objetcs uniques
-    //      // 4 - Créer element visuels à partir du tableau des produits computed
-    //      displayProductItem(products);
-    //      // :)
-    
-    //     }   
+/**
+ * Tableau qui collecte les ids des produits du localStorage pour les utiliser pour la requete POST (formulaire)
+ */
     
 let idProductsForPOST = new Array();
     console.log(idProductsForPOST)
+
+/**
+ * Tableau qui collecte toutes les infos des produit (id, nom, image, prix ... ) pour établir notre page panier
+ */
     
 let arrayAllDataProducts = new Array();
     console.log(arrayAllDataProducts)
+
+/**
+ * Tableau qui collecte les produits que l'utilisateur a selectionné.(Produit du LocalStorage avec seulement l'id, la couleur et la quantité)
+ */
 
 let arrayLocalStorage = JSON.parse(localStorage.getItem("panier"));
     console.log(arrayLocalStorage)
 
 /**
- * Fonction 'main' reçois les produits du localStorage et les produits de l'API afin de les réunir dans la fonction 'mergeDataProducts'.
+ * Fonction 'main' reçois les produits du localStorage et tout les produits de l'API afin de les réunir dans la fonction 'mergeDataProducts'.
  * @returns Retourne le tableau merge des produits.
  */
     
 function main() {
-    if (arrayLocalStorage.length === 0) {
+    if (arrayLocalStorage === null) {
         document.getElementById("totalQuantity").innerHTML = 0;
         document.getElementById("totalPrice").innerHTML = 0;
         document.getElementById(
             "cart__items"
-            ).innerHTML = `<p style="text-align: center;">Votre panier est vide !</p>`;
+            ).innerHTML = `<p style="text-align: center;">Your basket is empty !</p>`;
     } else {
     const productsAPI = fetchListProducts();
     productsAPI.then((productsAPI) => {
@@ -94,7 +92,7 @@ function mergeDataProducts(selectedProducts, productsAPI) {
 function displayProductItem(dataProduct) {
     const article = createBaliseArticle(dataProduct);
     const displayImage = screenImageProduct(dataProduct);
-    const cartItemContent = containerItemContent(dataProduct)
+    const cartItemContent = containerItemContent(dataProduct);
     
     checkTotalPrice();
     checkTotalQuantity();
@@ -111,6 +109,7 @@ function displayProductItem(dataProduct) {
 function createBaliseArticle(dataProduct) {
     const article = document.createElement("article");
     article.classList.add("cart__item");
+
     article.dataset.id = dataProduct.id;
     article.dataset.colors = dataProduct.colors;
     appendArticle(article);
@@ -134,6 +133,7 @@ function screenImageProduct(dataProduct) {
     const divImage = document.createElement("div");
     divImage.classList.add("cart__item__img");
     const image = document.createElement("img");
+    
     image.src = dataProduct.imageUrl;
     image.alt = dataProduct.altTxt;
     divImage.appendChild(image);
@@ -141,7 +141,7 @@ function screenImageProduct(dataProduct) {
 }
 
 /**
- * Fonction 'containerItemContent' qui crée la balise div cart__item__content qui va revoir la fonction descriptione et settings
+ * Fonction 'containerItemContent' qui crée la balise div cart__item__content qui va revoir la fonction description et settings
  * @returns Retourne le container complet
  */
 
@@ -182,7 +182,7 @@ function itemContentDescription(dataProduct) {
 }
 
 /**
- * Fonction 'itemContentSettings' qui crée la div cart__item__content__settings pour recevoir la quantité et le boutotn de suppression.
+ * Fonction 'itemContentSettings' qui crée la div cart__item__content__settings pour recevoir la quantité et le boutton de suppression.
  * @returns Retourne la balise Setting avec sa quantité et le boutton supprimer
  */
 
@@ -252,7 +252,9 @@ function removeItemFromPage(dataProduct) {
 }
 
 /**
- * Fonction 'divDeleteEvent' qui supprime le produit concerné du localStorage, une confirmation supplémentaire est imposé à l'utilisateur
+ * Fonction 'divDeleteEvent' qui supprime le produit concerné du localStorage, une confirmation supplémentaire est imposé à l'utilisateur.
+ * On utilise la méthode filter, afin de crée et retourner un nouveau tableau mais qui remplisse ma condition, qui est de selectionner le produit qui m'interesse
+ * et de l'extraire. 
  */
 
 function divDeleteEvent(dataProduct) {
@@ -269,6 +271,7 @@ function divDeleteEvent(dataProduct) {
 
 /**
  * Fonction 'checkTotalQuantity' qui calcule la quantité total des produits dans le panier
+ * On utilise la methode reduce afin de traiter toutes les valeurs du tableau et de les réduire à une seule valeur. 
  */
 
 function checkTotalQuantity() {
@@ -311,71 +314,67 @@ function newQuantityAndPrice(dataProduct, newValue) {
 const buttonOrder = document.querySelector("#order");
 buttonOrder.addEventListener("click", (e) => formRequestPost(e));
 
-/**
- * On réunit nos selecteurs dont on aura besoin
- */
+const errorFirstName = document.querySelector("#firstNameErrorMsg");
+const errorLastName = document.querySelector("#lastNameErrorMsg");
+const errorAddress = document.querySelector("#addressErrorMsg");
+const errorCity = document.querySelector("#cityErrorMsg");
+const errorEmail = document.querySelector("#emailErrorMsg");
 
-const errorFirstName = document.querySelector("#firstNameErrorMsg")
-const errorLastName = document.querySelector("#lastNameErrorMsg")
-const errorAddress = document.querySelector("#addressErrorMsg")
-const errorCity = document.querySelector("#cityErrorMsg")
-const errorEmail = document.querySelector("#emailErrorMsg")
-
-const form =  document.querySelector(".cart__order__form")
-const baliseInput = form.querySelectorAll("input")
+const form =  document.querySelector(".cart__order__form");
+const baliseInput = form.querySelectorAll("input");
 
 /**
- * On réunit nos regex pour filtrer les erreurs de formulaire et mauvaises syntaxes
+ * On réunit nos regex pour filtrer les erreurs de formulaire et mauvaises syntaxes. 
+ * Le Regex me permet de définir un modèle attendu dans un texte. 
  */
 
 const regexFirsLastName = (value) => {
     return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
-}
+};
 const regexCity = (value) => {
     return /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(value);
-}
+};
 
 const regexEmail = (value) => {
     return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
-}
+};
 
 const regexAdress = (value) => {
     return /^[0-9]{1,4}[ ,-][ A-Za-zÀ-ÿ0-9\-]+$/.test(value);
-}
-
+};
 
 /**
-' * Fonction formRequestPost qui envoie une requete POST avec Fetch à l'url de l'api et execute le formulaire que la fonction requestControllers lui envoie.
+ * Fonction formRequestPost qui envoie une requete POST avec Fetch à l'url de l'api et execute le formulaire que la fonction requestControllers lui envoie.
+ * Si le body est incorrect ou le panier est vide, la requete ne s'execute pas.
  */
 
 function formRequestPost(e) {
     e.preventDefault();
-    
-    if (checkedLastNameInvalid() && checkedFirstNameInvalid() && checkedAdressInvalid() && checkedCityInvalid() && checkedMailInvalid() && checkedQuantityLocalStorage()){  
     const body = requestControllers();
-    return body;
+
+    if (body === false) {
+        alert("Check your order form !");
+    } else if (idProductsForPOST.length === 0){
+        alert("You have not article in the basket!");
     } else {
-        alert("You form is incomplete !");
-    };
-    
-    
-    fetch("http://localhost:3000/api/products/order", {
-        method : "POST",
-        body : JSON.stringify(body),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        // window.location = `../html/confirmation.html?id=${data.orderId}`;
-        return console.log(data);
-    }) 
-    .catch((err) => {
-        console.log(err);
-        alert("The request could not be completed, check if the local server is running !");
-});
-}
+        fetch("http://localhost:3000/api/products/order", {
+            method : "POST",
+            body : JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            window.location = `../html/confirmation.html?id=${data.orderId}`;
+            return console.log(data);
+        }) 
+        .catch((err) => {
+            console.log(err);
+            alert("The request could not be completed, check if the local server is running !");
+        }); 
+        };
+    }
 
 /**
  * Fonction 'selectIdFromRequestPost' qui push les ids des produits selectionner par l'utilisateur afin de l'envoyer à la requete POST
@@ -383,16 +382,16 @@ function formRequestPost(e) {
 
 function selectIdFromRequestPost() {
     if (arrayLocalStorage === null) {
-        return false
+        return false;
     } else {
-    arrayLocalStorage.forEach(element => {
-        const orderId = element.id
-        idProductsForPOST.push(orderId)
-    });
-}
-}
+        arrayLocalStorage.forEach(element => {
+            const orderId = element.id;
+            idProductsForPOST.push(orderId);
+        });
+    };
+};
 
-selectIdFromRequestPost()
+selectIdFromRequestPost();
 
 /**
  * Fonction 'requestControllers' selectionne la classe cart__order__form. Il récupère les informations du formulaire données par l'utilisateur 
@@ -400,6 +399,7 @@ selectIdFromRequestPost()
  */
 
 function requestControllers() {
+    if ( checkedFirstNameInvalid() && checkedLastNameInvalid() && checkedAdressInvalid() && checkedCityInvalid() && checkedMailInvalid()){
     const cartForm = document.querySelector(".cart__order__form");
 
     const firstName = cartForm.elements.firstName.value;
@@ -415,24 +415,12 @@ function requestControllers() {
         city: city,
         email: email 
     },
-    products: idProductsForPOST   
+    products: idProductsForPOST  
      }
-     console.log(body)
      return body;
-}
-
-/**
- * Fonction 'checkedQuantityLocalStorage' check de la quantité si le formulaire peut-être envoyé, si le localStorage est à 0 articles, une alerte apparait
- * et l'envoie de la formulaire ne peut se faire 
- */
-
-function checkedQuantityLocalStorage() {
-    if (arrayLocalStorage.length === 0){
-        alert("You have not article in the basket!");
-        return false;
-    } else {
-        return true;
-    };      
+} else {
+    return false;
+};
 };
 
 /**
