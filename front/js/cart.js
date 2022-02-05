@@ -3,21 +3,18 @@
  */
     
 let idProductsForPOST = new Array();
-    console.log(idProductsForPOST)
 
 /**
  * Tableau qui collecte toutes les infos des produit (id, nom, image, prix ... ) pour établir notre page panier
  */
     
 let arrayAllDataProducts = new Array();
-    console.log(arrayAllDataProducts)
 
 /**
  * Tableau qui collecte les produits que l'utilisateur a selectionné.(Produit du LocalStorage avec seulement l'id, la couleur et la quantité)
  */
 
 let arrayLocalStorage = JSON.parse(localStorage.getItem("panier"));
-    console.log(arrayLocalStorage)
 
 /**
  * Fonction 'main' reçois les produits du localStorage et tout les produits de l'API afin de les réunir dans la fonction 'mergeDataProducts'.
@@ -73,10 +70,9 @@ function fetchFromLocalStorage() {
     
 function mergeDataProducts(selectedProducts, productsAPI) {
     selectedProducts.forEach(element => {
-        const arrayConcatSelectedAndAPI = productsAPI.concat(selectedProducts);
-        const product = arrayConcatSelectedAndAPI.find(prod => prod._id == element.id);
-        
+        const product = productsAPI.find(prod => prod._id == element.id);
         const dataProduct = {...product, ...element};
+
         arrayAllDataProducts.push(dataProduct);
         
         displayProductItem(dataProduct);
