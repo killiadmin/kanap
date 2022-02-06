@@ -98,14 +98,86 @@
 
         
             
-<h4 class="name" id="button"><span class="type-signature">(constant) </span>button<span class="type-signature"></span></h4>
+<h4 class="name" id="_id"><span class="type-signature">(constant) </span>_id<span class="type-signature"> :object</span></h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-default">Default Value:</dt>
+    <dd class="tag-default"><ul class="dummy">
+            <li>urlParams.get("id")</li>
+        </ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="arrayAllDataProducts"><span class="type-signature"></span>arrayAllDataProducts<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>Constante &quot;button&quot; qui représente le boutton &quot;Ajouter au panier&quot;, l'id &quot;#addToCart&quot; lui est attribuer
-ensuite un evenement au click sera affecter à cette constante</p>
+    <p>Tableau qui collecte toutes les infos des produit (id, nom, image, prix ... ) pour établir notre page panier</p>
 </div>
 
 
@@ -143,7 +215,69 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line116">line 116</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="arrayLocalStorage"><span class="type-signature"></span>arrayLocalStorage<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Tableau qui collecte les produits que l'utilisateur a selectionné.(Produit du LocalStorage avec seulement l'id, la couleur et la quantité)</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -205,7 +339,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line308">line 308</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line310">line 310</a>
     </li></ul></dd>
     
 
@@ -223,22 +357,16 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
         
             
-<h4 class="name" id="productId"><span class="type-signature">(constant) </span>productId<span class="type-signature"> :object</span></h4>
+<h4 class="name" id="idProductsForPOST"><span class="type-signature"></span>idProductsForPOST<span class="type-signature"></span></h4>
 
 
 
 
+<div class="description">
+    <p>Tableau qui collecte les ids des produits du localStorage pour les utiliser pour la requete POST (formulaire)</p>
+</div>
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
 
 
 
@@ -269,16 +397,11 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
 
     
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy">
-            <li>urlParams.get("id")</li>
-        </ul></dd>
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line10">line 10</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -379,6 +502,183 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
 
     
+    <h4 class="name" id="addProductValid"><span class="type-signature"></span>addProductValid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction qui nous dirige vers la page du panier si l'ordre est effectuer avec succès</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line212">line 212</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addQuantityForSimilarProduct"><span class="type-signature"></span>addQuantityForSimilarProduct<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction qui permet d'éviter les doublons dans le tableau du localStorage.
+Si le produit selectionner à son id et sa couleur identique alors un nouveau product n'est pas crée mais ajouté à la quantité du produit existant.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line180">line 180</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="allDataFromProduct"><span class="type-signature"></span>allDataFromProduct<span class="signature">(product)</span><span class="type-signature"></span></h4>
     
 
@@ -387,7 +687,8 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
 
 <div class="description">
-    <p>Fonction qui incrémente les données necessaire pour le localStorage qui sont &quot;altTxt&quot;, &quot;couleur&quot;, &quot;description&quot;, &quot;image&quot;, &quot;nom&quot; et &quot;prix&quot;</p>
+    <p>Fonction qui incrémente les données necessaire pour le localStorage qui sont &quot;altTxt&quot;, &quot;couleur&quot;, &quot;description&quot;, &quot;image&quot;, &quot;nom&quot; et &quot;prix&quot;
+On selectionne ensuite le bouton du ajouter au panier et on lui attribue un eventListener</p>
 </div>
 
 
@@ -480,7 +781,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line37">line 37</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -516,7 +817,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
 
     
-    <h4 class="name" id="appendArticle"><span class="type-signature"></span>appendArticle<span class="signature">(article)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="appendArticle"><span class="type-signature"></span>appendArticle<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -524,7 +825,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
 
 <div class="description">
-    <p>Fonction qui selectionne l'id &quot;#cart__items&quot; pour lui attribuer comme enfant &quot;article&quot;</p>
+    <p>Fonction 'appendArticle' permet de rattacher la balise article à l'id cart__items en tant qu'enfant.</p>
 </div>
 
 
@@ -533,55 +834,6 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>article</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente l'article</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -617,7 +869,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line72">line 72</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -777,7 +1029,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line41">line 41</a>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -873,7 +1125,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
             
 
-            <td class="description last"><p>Il va récupérer la description du canapé dans le tableau &quot;categoryData&quot;</p></td>
+            <td class="description last"><p>Il va récupérer la description du canapé dans le tableau &quot;products&quot;</p></td>
         </tr>
 
     
@@ -914,7 +1166,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line105">line 105</a>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line108">line 108</a>
     </li></ul></dd>
     
 
@@ -943,7 +1195,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
         
 <div class="param-desc">
-    <p>La description du canapé</p>
+    <p>La description du canapé(p)</p>
 </div>
 
 
@@ -1020,7 +1272,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
             
 
-            <td class="description last"><p>Il va récuperer l'url de l'image dans le tableau &quot;categoryData&quot;</p></td>
+            <td class="description last"><p>Il va récuperer l'url de l'image dans le tableau &quot;products&quot;</p></td>
         </tr>
 
     
@@ -1043,7 +1295,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
             
 
-            <td class="description last"><p>Il va récuperer le texte alternatif dans le tableau &quot;categoryData&quot;</p></td>
+            <td class="description last"><p>Il va récuperer le texte alternatif dans le tableau &quot;products&quot;</p></td>
         </tr>
 
     
@@ -1084,7 +1336,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line79">line 79</a>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -1190,7 +1442,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
             
 
-            <td class="description last"><p>Il va récupérer le nom du canapé dans le tableau &quot;categoryData&quot;</p></td>
+            <td class="description last"><p>Il va récupérer le nom du canapé dans le tableau &quot;products&quot;</p></td>
         </tr>
 
     
@@ -1231,7 +1483,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line92">line 92</a>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -1260,7 +1512,7 @@ ensuite un evenement au click sera affecter à cette constante</p>
 
         
 <div class="param-desc">
-    <p>Le nom du canapé</p>
+    <p>Le nom du canapé(h3)</p>
 </div>
 
 
@@ -1330,7 +1582,7 @@ Si les conditions sont rempli, les fonctions &quot;orderStorage&quot; et &quot;a
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line125">line 125</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -1376,7 +1628,7 @@ Si les conditions sont rempli, les fonctions &quot;orderStorage&quot; et &quot;a
     
 
     
-    <h4 class="name" id="checkTotalPrice"><span class="type-signature"></span>checkTotalPrice<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="checkedAdressInvalid"><span class="type-signature"></span>checkedAdressInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1384,8 +1636,7 @@ Si les conditions sont rempli, les fonctions &quot;orderStorage&quot; et &quot;a
 
 
 <div class="description">
-    <p>Fonction qui va chercher le selecteur &quot;#totalPrice&quot;, on utilise ensuite une loop direct. Cette boucle va multiplié le prix suivant la quantité selectionner
-L'évenement au click sur l'option &quot;supprimer&quot; influencera le total du prix</p>
+    <p>Fonction 'checkedAdressInvalid' check si l'adresse postale envoyé par l'utilisateur est valide et remplie les condition du regex</p>
 </div>
 
 
@@ -1429,7 +1680,447 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total du
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line259">line 259</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line479">line 479</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="checkedCityInvalid"><span class="type-signature"></span>checkedCityInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'checkedCityInvalid' check si la ville envoyé par l'utilisateur est valide et remplie les condition du regex</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line495">line 495</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="checkedFirstNameInvalid"><span class="type-signature"></span>checkedFirstNameInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'checkedFirstNameInvalid' check si le prénom envoyé par l'utilisateur est valide et remplie les condition du regex</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line442">line 442</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="checkedLastNameInvalid"><span class="type-signature"></span>checkedLastNameInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'checkedLastNameInvalid' check si le nom de famille envoyé par l'utilisateur est valide et remplie les condition du regex</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line462">line 462</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="checkedMailInvalid"><span class="type-signature"></span>checkedMailInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'checkedMailInvalid' check si le mail envoyé par l'utilisateur est valide et remplie les condition du regex</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line426">line 426</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="checkTotalPrice"><span class="type-signature"></span>checkTotalPrice<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'checkTotalPrice' qui calcule la prix total des produits dans le panier</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -1473,8 +2164,8 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total du
 
 
 <div class="description">
-    <p>Fonction qui va chercher le selecteur &quot;#totalQuantity&quot;, on utilise ensuite une loop direct. Cette boucle va additionner la quantité au total des produits
-L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de la quantité</p>
+    <p>Fonction 'checkTotalQuantity' qui calcule la quantité total des produits dans le panier
+On utilise la methode reduce afin de traiter toutes les valeurs du tableau et de les réduire à une seule valeur.</p>
 </div>
 
 
@@ -1518,7 +2209,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line242">line 242</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -1554,7 +2245,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
     
 
     
-    <h4 class="name" id="containerItemContent"><span class="type-signature"></span>containerItemContent<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="clearStorageAfterBuy"><span class="type-signature"></span>clearStorageAfterBuy<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1562,7 +2253,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
 
 <div class="description">
-    <p>Fonction qui crée la &quot;div, cart__item__content&quot; qui va contenir la description, la quantité et l'option &quot;supprimer&quot;</p>
+    <p>Une fois la commande éxécuté, le tableau localStorage est totalement effacé</p>
 </div>
 
 
@@ -1571,55 +2262,6 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -1655,7 +2297,95 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line99">line 99</a>
+        <a href="confirmation.js.html">confirmation.js</a>, <a href="confirmation.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="containerItemContent"><span class="type-signature"></span>containerItemContent<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'containerItemContent' qui crée la balise div cart__item__content qui va revoir la fonction description et settings</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -1684,7 +2414,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
         
 <div class="param-desc">
-    <p>Retourne la description et les settings(quantité + supprimer)</p>
+    <p>Retourne le container complet</p>
 </div>
 
 
@@ -1701,7 +2431,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
     
 
     
-    <h4 class="name" id="createBaliseArticle"><span class="type-signature"></span>createBaliseArticle<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createBaliseArticle"><span class="type-signature"></span>createBaliseArticle<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1709,7 +2439,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
 
 <div class="description">
-    <p>Fonction qui crée l'élement &quot;article&quot;, la classe &quot;.cart__item&quot; lui est attribuer, on affecte l'id à la &quot;data-id&quot; que la couleur à la &quot;data-color&quot;</p>
+    <p>Fonction 'createBaliseArticle' qui crée la balise article, l'id et la couleur du produit lui est attribué qui le retourne dans le display.</p>
 </div>
 
 
@@ -1718,55 +2448,6 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente un produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -1802,7 +2483,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line60">line 60</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -1831,7 +2512,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
         
 <div class="param-desc">
-    <p>Retourne le contenu de l'article</p>
+    <p>Retourne l'article</p>
 </div>
 
 
@@ -1848,7 +2529,7 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
     
 
     
-    <h4 class="name" id="divDeleteEvent"><span class="type-signature"></span>divDeleteEvent<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="displayProduct"><span class="type-signature"></span>displayProduct<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1856,9 +2537,95 @@ L'évenement au click sur l'option &quot;supprimer&quot; influencera le total de
 
 
 <div class="description">
-    <p>Fonction qui représente l'évenement au click de la suppression du produit, on utilise &quot;findIndex&quot; pour renvoyer le premier élement du tableau
-On utilise ensuite &quot;splice&quot; pour modifier le contenu du tableau &quot;arrayGlobalFromProduct&quot;
-On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppression du produit dans le storage + sur la page</p>
+    <p>On affiche ensuite le numéro de la commande unique, qui confirme que la commande a bien été éxécuté</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="confirmation.js.html">confirmation.js</a>, <a href="confirmation.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="displayProductItem"><span class="type-signature"></span>displayProductItem<span class="signature">(dataProduct)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'displayProductItem' qui assure la structure d'une vignette d'un produit, creation de la balise, l'image, le container...</p>
 </div>
 
 
@@ -1894,7 +2661,7 @@ On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppres
 
         <tr>
             
-                <td class="name"><code>item</code></td>
+                <td class="name"><code>dataProduct</code></td>
             
 
             <td class="type">
@@ -1910,7 +2677,7 @@ On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppres
 
             
 
-            <td class="description last"><p>Réprésente le produit</p></td>
+            <td class="description last"><p>Retourne le produit concerné avec ses informations</p></td>
         </tr>
 
     
@@ -1951,7 +2718,7 @@ On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppres
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line205">line 205</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line88">line 88</a>
     </li></ul></dd>
     
 
@@ -1987,7 +2754,7 @@ On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppres
     
 
     
-    <h4 class="name" id="formRequestPost"><span class="type-signature"></span>formRequestPost<span class="signature">(e)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="divDeleteEvent"><span class="type-signature"></span>divDeleteEvent<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1995,145 +2762,9 @@ On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppres
 
 
 <div class="description">
-    <p>Fonction qui envoie une requete POST avec Fetch à l'url de l'api, (alerte) si le tableau est de 0 produit, la requete ne s'effectue pas.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>e</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Si le tableau est vide, le changement de page ne s'effectue pas</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line315">line 315</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="idOrders"><span class="type-signature"></span>idOrders<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Fonction qui va récupérer le nombre d'item stockés dans le storageL
-La boucle va récupérer la clé dans le storage, on utilise split pour selectionner uniquement la couleur dans l'id, on push pour finir dans le tableau &quot;arrayProducts&quot;</p>
+    <p>Fonction 'divDeleteEvent' qui supprime le produit concerné du localStorage, une confirmation supplémentaire est imposé à l'utilisateur.
+On utilise la méthode filter, afin de crée et retourner un nouveau tableau mais qui remplisse ma condition, qui est de selectionner le produit qui m'interesse
+et de l'extraire.</p>
 </div>
 
 
@@ -2177,7 +2808,95 @@ La boucle va récupérer la clé dans le storage, on utilise split pour selectio
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line366">line 366</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line256">line 256</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="fetchFromLocalStorage"><span class="type-signature"></span>fetchFromLocalStorage<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'fetchFromLocalStorage' qui va chercher les produits du clients qui a été envoyé dans le LocalStorage.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -2206,12 +2925,199 @@ La boucle va récupérer la clé dans le storage, on utilise split pour selectio
 
         
 <div class="param-desc">
-    <p>Le tableau avec son id</p>
+    <p>Retourne le tableau du LocalStorage (id, couleur et quantité)</p>
 </div>
 
 
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="fetchListProducts"><span class="type-signature"></span>fetchListProducts<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'fetchListProducts' qui envoie une requete GET pour recevoir tout les produits de l'API.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Retourne les produits (Les canapés).</p>
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="formRequestPost"><span class="type-signature"></span>formRequestPost<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction formRequestPost qui envoie une requete POST avec Fetch à l'url de l'api et execute le formulaire que la fonction requestControllers lui envoie.
+Si le body est incorrect ou le panier est vide, la requete ne s'execute pas.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line347">line 347</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2326,7 +3232,7 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line101">line 101</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -2463,7 +3369,7 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line89">line 89</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -2623,7 +3529,7 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line56">line 56</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -2760,7 +3666,7 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line79">line 79</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line84">line 84</a>
     </li></ul></dd>
     
 
@@ -2804,7 +3710,8 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
 
 
 <div class="description">
-    <p>Fonction qui selectionne l'id &quot;#title&quot; pour lui attribuer le &quot;nom&quot; du produit</p>
+    <p>Fonction qui selectionne l'id &quot;#title&quot; pour lui attribuer le &quot;nom&quot; du produit,
+on selectionne également le title de la page pour lui attribuer le nom du produit</p>
 </div>
 
 
@@ -2897,7 +3804,7 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line69">line 69</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -2933,7 +3840,7 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
     
 
     
-    <h4 class="name" id="itemContentDelete"><span class="type-signature"></span>itemContentDelete<span class="signature">(divCartContentSettings, item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="itemContentDelete"><span class="type-signature"></span>itemContentDelete<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -2941,8 +3848,8 @@ option sera ensuite attribuer comme enfant à l'id &quot;#colors&quot;</p>
 
 
 <div class="description">
-    <p>Fonction qui crée la &quot;div, cart__item__content__settings__delete&quot;, la balise &quot;p, deleteItem&quot; lui est incrémenter
-Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supprimer le produit</p>
+    <p>Fonction 'itemContentDelete' qui crée la balise div cart__item__content__settings__delete et le boutton deleteItem,
+un EventListener lui est attribué pour supprimer l'article du panier</p>
 </div>
 
 
@@ -2951,78 +3858,6 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>divCartContentSettings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente la quantité + l'option supprimer</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -3058,7 +3893,7 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line184">line 184</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -3094,7 +3929,7 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
     
 
     
-    <h4 class="name" id="itemContentDescription"><span class="type-signature"></span>itemContentDescription<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="itemContentDescription"><span class="type-signature"></span>itemContentDescription<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -3102,7 +3937,8 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
 
 
 <div class="description">
-    <p>Fonction qui crée la &quot;div cart__item__content__description&quot; qui va contenir le &quot;h2&quot; le &quot;p&quot; de quantité et le &quot;p&quot; du prix qui va contenir leur données respective</p>
+    <p>Fonction 'itemContentDescription' crée la div cart__item__content__description et qui crée les balises du nom, la couleur et le prix,
+dataproduct lui fournit les informations pour alimenter leur contenu</p>
 </div>
 
 
@@ -3111,55 +3947,6 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -3195,7 +3982,7 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line117">line 117</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line162">line 162</a>
     </li></ul></dd>
     
 
@@ -3224,7 +4011,7 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
 
         
 <div class="param-desc">
-    <p>La description du produit (Nom, couleur et prix)</p>
+    <p>Retourne le container de la desccription complet</p>
 </div>
 
 
@@ -3241,7 +4028,7 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
     
 
     
-    <h4 class="name" id="itemContentQuantity"><span class="type-signature"></span>itemContentQuantity<span class="signature">(divCartContentSettings, item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="itemContentQuantity"><span class="type-signature"></span>itemContentQuantity<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -3249,8 +4036,8 @@ Un évenement au click lui est attribuer à la &quot;div&quot; pour pouvoir supp
 
 
 <div class="description">
-    <p>Fonction qui crée la &quot;div, cart__item__content__settings__quantity&quot;, qui crée ensuite la balise &quot;p&quot; qui va contenir du texte &quot;Qté :&quot;;
-l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur puisse choisir la quantité qu'il souhaite ajouter sous certaines conditions</p>
+    <p>Fonction qui crée la div cart__item__content__settings__quantity et l'input itemQuantity pour recevoir la quantité désiré du produit,
+un EventListener lui est attribué pour modifié la quantité à partir de la page panier</p>
 </div>
 
 
@@ -3259,78 +4046,6 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>divCartContentSettings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente la quantité + l'option supprimer</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -3366,7 +4081,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line156">line 156</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line199">line 199</a>
     </li></ul></dd>
     
 
@@ -3402,7 +4117,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
     
 
     
-    <h4 class="name" id="itemContentSettings"><span class="type-signature"></span>itemContentSettings<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="itemContentSettings"><span class="type-signature"></span>itemContentSettings<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -3410,7 +4125,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
 
 
 <div class="description">
-    <p>Fonction qui crée la &quot;div cart__item__content__settings&quot; qui a été incrémenter de deux fonctions (itemContentQuantity et itemContentDelete)</p>
+    <p>Fonction 'itemContentSettings' qui crée la div cart__item__content__settings pour recevoir la quantité et le boutton de suppression.</p>
 </div>
 
 
@@ -3419,55 +4134,6 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -3503,7 +4169,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line140">line 140</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line185">line 185</a>
     </li></ul></dd>
     
 
@@ -3532,7 +4198,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
 
         
 <div class="param-desc">
-    <p>Retourne les fonctions pour qui contienne la quantité et l'option supprimer</p>
+    <p>Retourne la balise Setting avec sa quantité et le boutton supprimer</p>
 </div>
 
 
@@ -3673,7 +4339,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line65">line 65</a>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -3717,7 +4383,8 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
 
 
 <div class="description">
-    <p>Fonction qui crée l'élément &quot;a&quot; pour produire un lien href pour chaque canapé et son id</p>
+    <p>Fonction qui crée l'élément &quot;a&quot; pour produire un lien href pour chaque canapé et son id.
+Ce lien permettra d'accéder aux informations du produit en question</p>
 </div>
 
 
@@ -3856,7 +4523,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
     
 
     
-    <h4 class="name" id="masterGlobalProduct"><span class="type-signature"></span>masterGlobalProduct<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="main"><span class="type-signature"></span>main<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -3864,8 +4531,7 @@ l'élément &quot;input, itemQuantity&quot; est crée pour que l'utilisateur pui
 
 
 <div class="description">
-    <p>Fonction qui représente la vue globale du produit, qui est incrémenter d'autres fonctions qui vont lui apporter les données du produit,
-qui sont la totalité de la balise &quot;article&quot;</p>
+    <p>Fonction 'main' reçois les produits du localStorage et tout les produits de l'API afin de les réunir dans la fonction 'mergeDataProducts'.</p>
 </div>
 
 
@@ -3874,55 +4540,6 @@ qui sont la totalité de la balise &quot;article&quot;</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente un produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -3958,7 +4575,105 @@ qui sont la totalité de la balise &quot;article&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line41">line 41</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Retourne le tableau merge des produits.</p>
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mergeDataProducts"><span class="type-signature"></span>mergeDataProducts<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'mergeDataProducts' qui recoit les deux tableaux afin de les merger, de les comparer et fournit toutes les informations necessaires.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -3994,7 +4709,7 @@ qui sont la totalité de la balise &quot;article&quot;</p>
     
 
     
-    <h4 class="name" id="newQuantityAndPrice"><span class="type-signature"></span>newQuantityAndPrice<span class="signature">(id, newValue, item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="newQuantityAndPrice"><span class="type-signature"></span>newQuantityAndPrice<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -4002,7 +4717,8 @@ qui sont la totalité de la balise &quot;article&quot;</p>
 
 
 <div class="description">
-    <p>Fonction qui représente la nouvelle quantité et le nouveau prix. On utilise find pour renvoyer la valeur du premier élement trouvé</p>
+    <p>Fonction 'newQuantityAndPrice' qui selectionne le produit grâce à l'EventListener afin de lui attribuer sa nouvelle valeur,
+sa nouvelle valeur lui est attribué sur la page panier et le localStorage</p>
 </div>
 
 
@@ -4011,101 +4727,6 @@ qui sont la totalité de la balise &quot;article&quot;</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente l'id du produit</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>newValue</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le nouveau prix du produit acheté</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -4141,7 +4762,7 @@ qui sont la totalité de la balise &quot;article&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line278">line 278</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -4177,7 +4798,7 @@ qui sont la totalité de la balise &quot;article&quot;</p>
     
 
     
-    <h4 class="name" id="orderInvalid"><span class="type-signature"></span>orderInvalid<span class="signature">(colors, quantity)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="orderInvalid"><span class="type-signature"></span>orderInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -4185,7 +4806,8 @@ qui sont la totalité de la balise &quot;article&quot;</p>
 
 
 <div class="description">
-    <p>Fonction qui s'effectue au click si aucune couleur ou quantité n'est selectionnée à l'achat + une alerte pour indiquer à l'utilisateur</p>
+    <p>Fonction qui s'effectue au click si aucune couleur ou quantité n'est selectionnée à l'achat + une alerte pour indiquer à l'utilisateur,
+Si la quantité est supérieur à 100, l'ajout au localStorage ne pourra se faire</p>
 </div>
 
 
@@ -4194,78 +4816,6 @@ qui sont la totalité de la balise &quot;article&quot;</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>colors</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente la couleur du produit</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>quantity</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente la quantité de l'ordre</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -4301,7 +4851,7 @@ qui sont la totalité de la balise &quot;article&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line170">line 170</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line198">line 198</a>
     </li></ul></dd>
     
 
@@ -4357,7 +4907,8 @@ qui sont la totalité de la balise &quot;article&quot;</p>
 <div class="description">
     <p>Fonction qui ajoute une clé unique &quot;panier&quot; et sa valeur dans le localStorage.
 La constante &quot;valueKeyStorageProduct&quot; va récupérer les données du produit qui sont propre aux choix de l'utilisateur (id, couleur et quantité)
-Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies les données dans le tableau si la clé n'existe pas &quot;saveOrderKeyStorage&quot; crée un tableau et incrémente les données</p>
+Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies les données dans le tableau,
+si la clé n'existe pas &quot;saveOrderKeyStorage&quot; crée un tableau et incrémente les données</p>
 </div>
 
 
@@ -4432,7 +4983,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
 
             
 
-            <td class="description last"><p>Représente la quantité de l'ordre</p></td>
+            <td class="description last"><p>Représente la quantité de l'ordre envoyé par le client</p></td>
         </tr>
 
     
@@ -4473,7 +5024,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="product.js.html">product.js</a>, <a href="product.js.html#line142">line 142</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -4509,7 +5060,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
     
 
     
-    <h4 class="name" id="previewKanapArticle"><span class="type-signature"></span>previewKanapArticle<span class="signature">(visual)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="previewKanapArticle"><span class="type-signature"></span>previewKanapArticle<span class="signature">(product)</span><span class="type-signature"></span></h4>
     
 
     
@@ -4517,7 +5068,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
 
 
 <div class="description">
-    <p>Fonction qui retourne une vignette d'un canapé et qui crée les balises HTML necessaire pour son visuel(a, article, img, h3 et p)</p>
+    <p>Fonction qui retourne une boucle de chauqe vignette de canapé et qui crée les balises HTML necessaire pour son visuel(a, article, img, h3 et p)</p>
 </div>
 
 
@@ -4553,7 +5104,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
 
         <tr>
             
-                <td class="name"><code>visual</code></td>
+                <td class="name"><code>product</code></td>
             
 
             <td class="type">
@@ -4569,7 +5120,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
 
             
 
-            <td class="description last"><p>Représente le visuel en frontend global de l'article</p></td>
+            <td class="description last"><p>Représente représente le produits complet avec toutes ses informations(nom, image, description...)</p></td>
         </tr>
 
     
@@ -4610,7 +5161,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="script.js.html">script.js</a>, <a href="script.js.html#line21">line 21</a>
+        <a href="script.js.html">script.js</a>, <a href="script.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -4646,7 +5197,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
     
 
     
-    <h4 class="name" id="removeItemFromPage"><span class="type-signature"></span>removeItemFromPage<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="pushOrderStorage"><span class="type-signature"></span>pushOrderStorage<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -4654,8 +5205,7 @@ Si la clé existe &quot;panier&quot;, &quot;saveOrderKeyStorage&quot; envoies le
 
 
 <div class="description">
-    <p>Fonction qui va chercher les selecteurs &quot;data-id + data-colors&quot; dans le cart.html
-On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
+    <p>Fonction qui push les valeurs du produit selectionner (id, couleur et quantité) dans le localStorage puis sauvegarder</p>
 </div>
 
 
@@ -4664,55 +5214,6 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -4748,7 +5249,7 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line232">line 232</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -4784,7 +5285,7 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
     
 
     
-    <h4 class="name" id="removeItemFromStorage"><span class="type-signature"></span>removeItemFromStorage<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="regexFirsLastName"><span class="type-signature"></span>regexFirsLastName<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -4792,7 +5293,8 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
 
 
 <div class="description">
-    <p>Fonction qui selectionne l'id et la couleur du produit. On utilise ensuite &quot;removeItem&quot; pour supprimer la clé en argument</p>
+    <p>On réunit nos regex pour filtrer les erreurs de formulaire et mauvaises syntaxes.
+Le Regex me permet de définir un modèle attendu dans un texte.</p>
 </div>
 
 
@@ -4801,55 +5303,6 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -4885,7 +5338,95 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line221">line 221</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line327">line 327</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeItemFromPage"><span class="type-signature"></span>removeItemFromPage<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'removeItemFromPage' qui supprime la balise concerné du produit selectionner de la page panier</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -4929,8 +5470,7 @@ On utilise ensuite &quot;remove&quot; pour supprimer l'élement</p>
 
 
 <div class="description">
-    <p>Fonction qui agit sur la class &quot;.cart__order__form&quot;, on utilise HTMLFormElement pour retourner HTMLFormControlCollection
-On récupère les valeurs du tableau avec &quot;value&quot;, on ajoute l'objet contact et la fonction va nous récupérer l'id</p>
+    <p>Fonction 'requestControllers' selectionne la classe cart__order__form. Il récupère les informations du formulaire données par l'utilisateur</p>
 </div>
 
 
@@ -4974,7 +5514,7 @@ On récupère les valeurs du tableau avec &quot;value&quot;, on ajoute l'objet c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line338">line 338</a>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line397">line 397</a>
     </li></ul></dd>
     
 
@@ -5003,7 +5543,7 @@ On récupère les valeurs du tableau avec &quot;value&quot;, on ajoute l'objet c
 
         
 <div class="param-desc">
-    <p>L'objet contact avec ses données le tableau products</p>
+    <p>Retourne le body de la requete</p>
 </div>
 
 
@@ -5020,7 +5560,7 @@ On récupère les valeurs du tableau avec &quot;value&quot;, on ajoute l'objet c
     
 
     
-    <h4 class="name" id="saveNewPriceAndQuantity"><span class="type-signature"></span>saveNewPriceAndQuantity<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="resquestGetReceived"><span class="type-signature"></span>resquestGetReceived<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -5028,8 +5568,7 @@ On récupère les valeurs du tableau avec &quot;value&quot;, on ajoute l'objet c
 
 
 <div class="description">
-    <p>Fonction  qui va actualiser dans le local storage la clé qui a été ajouter auparavant avec la fonction &quot;orderStorage&quot; dans product.js
-sous la forme de &quot;id (Nom du canapé) : colors (La couleur)&quot;</p>
+    <p>On récupère l'id produits envoyé par la requete POST grâce à &quot;URLSearchParams&quot;</p>
 </div>
 
 
@@ -5038,55 +5577,6 @@ sous la forme de &quot;id (Nom du canapé) : colors (La couleur)&quot;</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -5122,7 +5612,7 @@ sous la forme de &quot;id (Nom du canapé) : colors (La couleur)&quot;</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line295">line 295</a>
+        <a href="confirmation.js.html">confirmation.js</a>, <a href="confirmation.js.html#line9">line 9</a>
     </li></ul></dd>
     
 
@@ -5158,7 +5648,7 @@ sous la forme de &quot;id (Nom du canapé) : colors (La couleur)&quot;</p>
     
 
     
-    <h4 class="name" id="screenImageProduct"><span class="type-signature"></span>screenImageProduct<span class="signature">(item)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="saveOrderStorage"><span class="type-signature"></span>saveOrderStorage<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -5166,8 +5656,7 @@ sous la forme de &quot;id (Nom du canapé) : colors (La couleur)&quot;</p>
 
 
 <div class="description">
-    <p>Fonction qui crée la &quot;div&quot; contenant l'image, on va lui attribuer la classe &quot;cart__item__img&quot;,
-crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la &quot;div&quot; son enfant &quot;img&quot;</p>
+    <p>Fonction permet de mettre à jour le localStorage avec les nouvelles valeurs</p>
 </div>
 
 
@@ -5176,55 +5665,6 @@ crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la 
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Représente le produit</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -5260,7 +5700,95 @@ crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line83">line 83</a>
+        <a href="product.js.html">product.js</a>, <a href="product.js.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="screenImageProduct"><span class="type-signature"></span>screenImageProduct<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'screenImageProduct' crée la balise div qui va recevoir les informations de l'image et le texte alternatif fournit par le dataProduct</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -5289,12 +5817,100 @@ crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la 
 
         
 <div class="param-desc">
-    <p>Retourne la &quot;div&quot; contenant l'image</p>
+    <p>La div Image complete</p>
 </div>
 
 
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="selectIdFromRequestPost"><span class="type-signature"></span>selectIdFromRequestPost<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fonction 'selectIdFromRequestPost' qui push les ids des produits selectionner par l'utilisateur afin de l'envoyer à la requete POST</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cart.js.html">cart.js</a>, <a href="cart.js.html#line379">line 379</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5316,13 +5932,13 @@ crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la 
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#button">button</a></li><li><a href="global.html#buttonOrder">buttonOrder</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#checkTotalPrice">checkTotalPrice</a></li><li><a href="global.html#checkTotalQuantity">checkTotalQuantity</a></li><li><a href="global.html#containerItemContent">containerItemContent</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#divDeleteEvent">divDeleteEvent</a></li><li><a href="global.html#formRequestPost">formRequestPost</a></li><li><a href="global.html#idOrders">idOrders</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemContentDelete">itemContentDelete</a></li><li><a href="global.html#itemContentDescription">itemContentDescription</a></li><li><a href="global.html#itemContentQuantity">itemContentQuantity</a></li><li><a href="global.html#itemContentSettings">itemContentSettings</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#masterGlobalProduct">masterGlobalProduct</a></li><li><a href="global.html#newQuantityAndPrice">newQuantityAndPrice</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#productId">productId</a></li><li><a href="global.html#removeItemFromPage">removeItemFromPage</a></li><li><a href="global.html#removeItemFromStorage">removeItemFromStorage</a></li><li><a href="global.html#requestControllers">requestControllers</a></li><li><a href="global.html#saveNewPriceAndQuantity">saveNewPriceAndQuantity</a></li><li><a href="global.html#screenImageProduct">screenImageProduct</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#_id">_id</a></li><li><a href="global.html#addProductValid">addProductValid</a></li><li><a href="global.html#addQuantityForSimilarProduct">addQuantityForSimilarProduct</a></li><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#arrayAllDataProducts">arrayAllDataProducts</a></li><li><a href="global.html#arrayLocalStorage">arrayLocalStorage</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#buttonOrder">buttonOrder</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#checkedAdressInvalid">checkedAdressInvalid</a></li><li><a href="global.html#checkedCityInvalid">checkedCityInvalid</a></li><li><a href="global.html#checkedFirstNameInvalid">checkedFirstNameInvalid</a></li><li><a href="global.html#checkedLastNameInvalid">checkedLastNameInvalid</a></li><li><a href="global.html#checkedMailInvalid">checkedMailInvalid</a></li><li><a href="global.html#checkTotalPrice">checkTotalPrice</a></li><li><a href="global.html#checkTotalQuantity">checkTotalQuantity</a></li><li><a href="global.html#clearStorageAfterBuy">clearStorageAfterBuy</a></li><li><a href="global.html#containerItemContent">containerItemContent</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#displayProduct">displayProduct</a></li><li><a href="global.html#displayProductItem">displayProductItem</a></li><li><a href="global.html#divDeleteEvent">divDeleteEvent</a></li><li><a href="global.html#fetchFromLocalStorage">fetchFromLocalStorage</a></li><li><a href="global.html#fetchListProducts">fetchListProducts</a></li><li><a href="global.html#formRequestPost">formRequestPost</a></li><li><a href="global.html#idProductsForPOST">idProductsForPOST</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemContentDelete">itemContentDelete</a></li><li><a href="global.html#itemContentDescription">itemContentDescription</a></li><li><a href="global.html#itemContentQuantity">itemContentQuantity</a></li><li><a href="global.html#itemContentSettings">itemContentSettings</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mergeDataProducts">mergeDataProducts</a></li><li><a href="global.html#newQuantityAndPrice">newQuantityAndPrice</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#pushOrderStorage">pushOrderStorage</a></li><li><a href="global.html#regexFirsLastName">regexFirsLastName</a></li><li><a href="global.html#removeItemFromPage">removeItemFromPage</a></li><li><a href="global.html#requestControllers">requestControllers</a></li><li><a href="global.html#resquestGetReceived">resquestGetReceived</a></li><li><a href="global.html#saveOrderStorage">saveOrderStorage</a></li><li><a href="global.html#screenImageProduct">screenImageProduct</a></li><li><a href="global.html#selectIdFromRequestPost">selectIdFromRequestPost</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jan 20 2022 13:29:09 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Feb 06 2022 16:49:29 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

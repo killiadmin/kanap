@@ -27,74 +27,121 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Vue globale sur le total des achats du tableau 
+ * Tableau qui collecte les ids des produits du localStorage pour les utiliser pour la requete POST (formulaire)
+ */
+    
+let idProductsForPOST = new Array();
+
+/**
+ * Tableau qui collecte toutes les infos des produit (id, nom, image, prix ... ) pour établir notre page panier
+ */
+    
+let arrayAllDataProducts = new Array();
+
+/**
+ * Tableau qui collecte les produits que l'utilisateur a selectionné.(Produit du LocalStorage avec seulement l'id, la couleur et la quantité)
  */
 
- fetch("http://localhost:3000/api/products")
- .then((response) => response.json())
- .then((categoryData) => {console.log(categoryData)
-     return arrayCategoryData(categoryData);
- })
+let arrayLocalStorage = JSON.parse(localStorage.getItem("panier"));
 
-function arrayCategoryData(categoryData) {
-    console.log(categoryData[6].name)
+/**
+ * Fonction 'main' reçois les produits du localStorage et tout les produits de l'API afin de les réunir dans la fonction 'mergeDataProducts'.
+ * @returns Retourne le tableau merge des produits.
+ */
+    
+function main() {
+    if (arrayLocalStorage === null) {
+        document.getElementById("totalQuantity").innerHTML = 0;
+        document.getElementById("totalPrice").innerHTML = 0;
+        document.getElementById(
+            "cart__items"
+            ).innerHTML = `&lt;p style="text-align: center;">Your basket is empty !&lt;/p>`;
+    } else {
+    const productsAPI = fetchListProducts();
+    productsAPI.then((productsAPI) => {
+        const selectedProducts = fetchFromLocalStorage();
+        const products = mergeDataProducts(selectedProducts, productsAPI);
+        return products
+    });
+};
+};  
+    
+main();
+
+/**
+ * Fonction 'fetchListProducts' qui envoie une requete GET pour recevoir tout les produits de l'API.
+ * @returns Retourne les produits (Les canapés).
+ */
+    
+function fetchListProducts () {
+    return fetch("http://localhost:3000/api/products")
+    .then(response => response.json())
+    .then(products => {return (products)})
+    .catch(err => {
+        console.log(err)
+    }); 
+};
+
+/**
+ * Fonction 'fetchFromLocalStorage' qui va chercher les produits du clients qui a été envoyé dans le LocalStorage.
+ * @returns Retourne le tableau du LocalStorage (id, couleur et quantité)
+ */
+    
+function fetchFromLocalStorage() {
+    const valueLocalStorage = JSON.parse(localStorage.getItem("panier"));
+    return valueLocalStorage
 }
 
- let saveOrderKeyStorage = JSON.parse(localStorage.getItem("panier"))
- console.log(saveOrderKeyStorage)
-// const arrayGlobalFromProduct = [];
-
-saveOrderKeyStorage.forEach((item) => masterGlobalProduct(item));
-
 /**
- * Fonction qui représente le nombre d'items stockés dans le tableau,
- * une boucle est mise en place pour déterminer la position de l'article ajouter, premier, deuxième etc...  
+ * Fonction 'mergeDataProducts' qui recoit les deux tableaux afin de les merger, de les comparer et fournit toutes les informations necessaires.
  */
-
-// function quantityArray() {
-//     const numberItems = localStorage.length;
-//     for (let i = 0; i &lt; numberItems; i++) {
-//         const keyElement = localStorage.getItem(localStorage.key(i));
-//         const itemElement = JSON.parse(keyElement);
-//         arrayGlobalFromProduct.push(itemElement);
-// }
-// }
-
-/**
- * Fonction qui représente la vue globale du produit, qui est incrémenter d'autres fonctions qui vont lui apporter les données du produit,
- * qui sont la totalité de la balise "article" 
- * @param {object} item Représente un produit
- */
-
-function masterGlobalProduct(item) {
-    const article = createBaliseArticle(item);
-    const divImage = screenImageProduct(item);
-    const cartContent = containerItemContent(item);
-
-    article.appendChild(divImage);
-    article.appendChild(cartContent);
     
-    appendArticle(article);
+function mergeDataProducts(selectedProducts, productsAPI) {
+    selectedProducts.forEach(element => {
+        const product = productsAPI.find(prod => prod._id == element.id);
+        const dataProduct = {...product, ...element};
+
+        arrayAllDataProducts.push(dataProduct);
+        
+        displayProductItem(dataProduct);
+    });
+};
+    
+//====================================================================================================================================
+/**
+ * Fonction 'displayProductItem' qui assure la structure d'une vignette d'un produit, creation de la balise, l'image, le container...
+ * @param {object} dataProduct Retourne le produit concerné avec ses informations
+ */
+    
+function displayProductItem(dataProduct) {
+    const article = createBaliseArticle(dataProduct);
+    const displayImage = screenImageProduct(dataProduct);
+    const cartItemContent = containerItemContent(dataProduct);
+    
     checkTotalPrice();
     checkTotalQuantity();
+    
+    article.appendChild(displayImage);
+    article.appendChild(cartItemContent);
 }
 
 /**
- * Fonction qui crée l'élement "article", la classe ".cart__item" lui est attribuer, on affecte l'id à la "data-id" que la couleur à la "data-color"
- * @param {object} item Représente un produit
- * @returns Retourne le contenu de l'article
+ * Fonction 'createBaliseArticle' qui crée la balise article, l'id et la couleur du produit lui est attribué qui le retourne dans le display. 
+ * @returns Retourne l'article
  */
 
-function createBaliseArticle(item) {
+function createBaliseArticle(dataProduct) {
     const article = document.createElement("article");
     article.classList.add("cart__item");
-    article.dataset.id = item.id;
-    article.dataset.colors = item.colors;
+
+    article.dataset.id = dataProduct.id;
+    article.dataset.colors = dataProduct.colors;
+    appendArticle(article);
     return article;
 }
+
 /**
- * Fonction qui selectionne l'id "#cart__items" pour lui attribuer comme enfant "article"
- * @param {object} article Représente l'article
+ * Fonction 'appendArticle' permet de rattacher la balise article à l'id cart__items en tant qu'enfant.
  */
 
 function appendArticle(article) {
@@ -102,86 +149,82 @@ function appendArticle(article) {
 }
 
 /**
- * Fonction qui crée la "div" contenant l'image, on va lui attribuer la classe "cart__item__img",
- * crée l'élément img, lui affecter sa src et son alt pour ensuite donner à la "div" son enfant "img"
- * @param {object} item Représente le produit
- * @returns Retourne la "div" contenant l'image
+ * Fonction 'screenImageProduct' crée la balise div qui va recevoir les informations de l'image et le texte alternatif fournit par le dataProduct
+ * @returns La div Image complete
  */
 
-function screenImageProduct(item) {
+function screenImageProduct(dataProduct) {
     const divImage = document.createElement("div");
     divImage.classList.add("cart__item__img");
     const image = document.createElement("img");
-    image.src = item.imageUrl;
-    image.alt = item.altTxt;
+    
+    image.src = dataProduct.imageUrl;
+    image.alt = dataProduct.altTxt;
     divImage.appendChild(image);
     return divImage;
 }
 
 /**
- * Fonction qui crée la "div, cart__item__content" qui va contenir la description, la quantité et l'option "supprimer"
- * @param {object} item Représente le produit
- * @returns Retourne la description et les settings(quantité + supprimer)
+ * Fonction 'containerItemContent' qui crée la balise div cart__item__content qui va revoir la fonction description et settings
+ * @returns Retourne le container complet
  */
 
-function containerItemContent(item) {
+function containerItemContent(dataProduct) {
     const divCartContentMaster = document.createElement("div");
     divCartContentMaster.classList.add("cart__item__content");
-
-    const contentDescription = itemContentDescription(item);
-    const contentSettings = itemContentSettings(item);
-
+    
+    const contentDescription = itemContentDescription(dataProduct);
+    const contentSettings = itemContentSettings(dataProduct);
+    
     divCartContentMaster.appendChild(contentDescription);
     divCartContentMaster.appendChild(contentSettings);
     return divCartContentMaster;
 }
 
 /**
- * Fonction qui crée la "div cart__item__content__description" qui va contenir le "h2" le "p" de quantité et le "p" du prix qui va contenir leur données respective
- * @param {object} item Représente le produit
- * @returns La description du produit (Nom, couleur et prix)
+ * Fonction 'itemContentDescription' crée la div cart__item__content__description et qui crée les balises du nom, la couleur et le prix, 
+ * dataproduct lui fournit les informations pour alimenter leur contenu
+ * @returns Retourne le container de la desccription complet
  */
 
-function itemContentDescription(item) {
+function itemContentDescription(dataProduct) {
     const divCartContentDescription = document.createElement("div");
     divCartContentDescription.classList.add("cart__item__content__description");
     
     const titleh2 = document.createElement("h2");
-    titleh2.textContent = item.name;
+    titleh2.textContent = dataProduct.name;
     const balisePcolors = document.createElement("p");
-    balisePcolors.textContent = item.colors;
+    balisePcolors.textContent = dataProduct.colors;
     const balisePPrice = document.createElement("p");
-    balisePPrice.textContent = item.price + " €";
-    
+    balisePPrice.textContent = dataProduct.price + " " +"€";
+
     divCartContentDescription.appendChild(titleh2);
     divCartContentDescription.appendChild(balisePcolors);
     divCartContentDescription.appendChild(balisePPrice);
+
     return divCartContentDescription;
 }
 
 /**
- * Fonction qui crée la "div cart__item__content__settings" qui a été incrémenter de deux fonctions (itemContentQuantity et itemContentDelete)
- * @param {*} item Représente le produit
- * @returns Retourne les fonctions pour qui contienne la quantité et l'option supprimer
+ * Fonction 'itemContentSettings' qui crée la div cart__item__content__settings pour recevoir la quantité et le boutton de suppression.
+ * @returns Retourne la balise Setting avec sa quantité et le boutton supprimer
  */
 
-function itemContentSettings(item) {
+function itemContentSettings(dataProduct) {
     const divCartContentSettings = document.createElement("div");
     divCartContentSettings.classList.add("cart__item__content__settings");
 
-    itemContentQuantity(divCartContentSettings, item);
-    itemContentDelete(divCartContentSettings, item);
+    itemContentQuantity(divCartContentSettings, dataProduct);
+    itemContentDelete(divCartContentSettings, dataProduct);
     return divCartContentSettings;    
 }
 
 /**
- * Fonction qui crée la "div, cart__item__content__settings__quantity", qui crée ensuite la balise "p" qui va contenir du texte "Qté :";
- * l'élément "input, itemQuantity" est crée pour que l'utilisateur puisse choisir la quantité qu'il souhaite ajouter sous certaines conditions
- * @param {object} divCartContentSettings Représente la quantité + l'option supprimer
- * @param {object} item Représente le produit
+ * Fonction qui crée la div cart__item__content__settings__quantity et l'input itemQuantity pour recevoir la quantité désiré du produit, 
+ * un EventListener lui est attribué pour modifié la quantité à partir de la page panier
  */
 
-function itemContentQuantity(divCartContentSettings,item) {
+function itemContentQuantity(divCartContentSettings, dataProduct) {
     const divQuantity = document.createElement("div");
     divQuantity.classList.add("cart__item__content__settings__quantity");
     
@@ -194,158 +237,150 @@ function itemContentQuantity(divCartContentSettings,item) {
     inputQuantity.name = "itemQuantity";
     inputQuantity.min = "1";
     inputQuantity.max = "100";
-    inputQuantity.value = item.quantity;
-
-    inputQuantity.addEventListener("change", () => newQuantityAndPrice(item.id, inputQuantity.value, item));
+    inputQuantity.setAttribute("value", dataProduct.quantity);
     
+    inputQuantity.addEventListener("input", () => newQuantityAndPrice(dataProduct, inputQuantity.value));
+    
+    divQuantity.appendChild(balisePQuantity);
     divQuantity.appendChild(inputQuantity);
     divCartContentSettings.appendChild(divQuantity);
 }
 
 /**
- * Fonction qui crée la "div, cart__item__content__settings__delete", la balise "p, deleteItem" lui est incrémenter
- * Un évenement au click lui est attribuer à la "div" pour pouvoir supprimer le produit
- * @param {object} divCartContentSettings Représente la quantité + l'option supprimer
- * @param {object} item Représente le produit
+ * Fonction 'itemContentDelete' qui crée la balise div cart__item__content__settings__delete et le boutton deleteItem,
+ * un EventListener lui est attribué pour supprimer l'article du panier
  */
 
-function itemContentDelete(divCartContentSettings,item) {
+function itemContentDelete(divCartContentSettings, dataProduct) {
     const divDelete = document.createElement("div");
     divDelete.classList.add("cart__item__content__settings__delete");
     
     const balisePDelete = document.createElement("p");
     balisePDelete.classList.add("deleteItem");
     balisePDelete.textContent = ("Supprimer");
-
-    divDelete.addEventListener("click", () => divDeleteEvent(item));
-
+    
+    divDelete.addEventListener("click", () => divDeleteEvent(dataProduct));
+    
     divDelete.appendChild(balisePDelete);
     divCartContentSettings.appendChild(divDelete);
-} 
+}
 
 /**
- * Fonction qui représente l'évenement au click de la suppression du produit, on utilise "findIndex" pour renvoyer le premier élement du tableau
- * On utilise ensuite "splice" pour modifier le contenu du tableau "arrayGlobalFromProduct"
- * On incrémente ensuite 4 fonctions pour le total(quantité + prix) et la suppression du produit dans le storage + sur la page  
- * @param {object} item Réprésente le produit
+ * Fonction 'removeItemFromPage' qui supprime la balise concerné du produit selectionner de la page panier
  */
 
-function divDeleteEvent(item) {
-    const itemDelete = saveOrderKeyStorage.findIndex(
-        (product) => product.id === item.id &amp;&amp; product.colors === item.colors);
-        saveOrderKeyStorage.splice(itemDelete, 1);
+function removeItemFromPage(dataProduct) {
+    const itemDelete = document.querySelector(`article[data-id="${dataProduct.id}"][data-colors="${dataProduct.colors}"]`);
+        itemDelete.remove();
+        location.reload();     
+}
 
+/**
+ * Fonction 'divDeleteEvent' qui supprime le produit concerné du localStorage, une confirmation supplémentaire est imposé à l'utilisateur.
+ * On utilise la méthode filter, afin de crée et retourner un nouveau tableau mais qui remplisse ma condition, qui est de selectionner le produit qui m'interesse
+ * et de l'extraire. 
+ */
+
+function divDeleteEvent(dataProduct) {
+    if (window.confirm(`Are you sure you want to remove this item from the cart ?`)) {
+    const itemDelete = arrayLocalStorage.filter(e => e.id !== dataProduct.id || e.colors !== dataProduct.colors);
+    
+    localStorage.setItem("panier", JSON.stringify(itemDelete));
+    
     checkTotalQuantity();
     checkTotalPrice();
-    removeItemFromStorage(item);
-    removeItemFromPage(item);
-}
-    
-/**
- * Fonction qui selectionne l'id et la couleur du produit. On utilise ensuite "removeItem" pour supprimer la clé en argument
- * @param {object} item Représente le produit
- */
-
-function removeItemFromStorage(item) {
-    const localStoragekey = `${item.id}:${item.colors}`;
-    localStorage.removeItem(localStoragekey);
-}
-
-/**
- * Fonction qui va chercher les selecteurs "data-id + data-colors" dans le cart.html
- * On utilise ensuite "remove" pour supprimer l'élement
- * @param {object} item Représente le produit
- */
-
-function removeItemFromPage(item) {
-        const itemDelete = document.querySelector(`article[data-id="${item.id}"][data-colors="${item.colors}"]`);
-        itemDelete.remove();
+    removeItemFromPage(dataProduct);
     }
+}
 
 /**
- * Fonction qui va chercher le selecteur "#totalQuantity", on utilise ensuite une loop direct. Cette boucle va additionner la quantité au total des produits
- * L'évenement au click sur l'option "supprimer" influencera le total de la quantité 
+ * Fonction 'checkTotalQuantity' qui calcule la quantité total des produits dans le panier
+ * On utilise la methode reduce afin de traiter toutes les valeurs du tableau et de les réduire à une seule valeur. 
  */
 
 function checkTotalQuantity() {
-        let total = 0
-        const totalQuantity = document.querySelector("#totalQuantity");
+    const totalQuantity = document.querySelector("#totalQuantity");
+    const totalQ = arrayAllDataProducts.reduce((totalQ, dataProduct) => totalQ + dataProduct.quantity, 0);
 
-        saveOrderKeyStorage.forEach((item) => {
-            const totalGlobalQuantity = item.quantity;
-            total = total + totalGlobalQuantity;
-        })
-
-        totalQuantity.textContent = total;
-    }
+    totalQuantity.textContent = totalQ;
+}
 
 /**
- * Fonction qui va chercher le selecteur "#totalPrice", on utilise ensuite une loop direct. Cette boucle va multiplié le prix suivant la quantité selectionner
- * L'évenement au click sur l'option "supprimer" influencera le total du prix
+ * Fonction 'checkTotalPrice' qui calcule la prix total des produits dans le panier
  */
-
+    
 function checkTotalPrice() {
-    let total = 0;
     const totalPrice = document.querySelector("#totalPrice");
+    const totalP = arrayAllDataProducts.reduce((totalP, dataProduct) => totalP + dataProduct.price * dataProduct.quantity, 0);
 
-    saveOrderKeyStorage.forEach((item) => {
-        const totalGlobalPrice = item.price * item.quantity ;
-        total = total + totalGlobalPrice;
-    })
-
-    totalPrice.textContent = total;
-    }
+    totalPrice.textContent = totalP;
+}
 
 /**
- * Fonction qui représente la nouvelle quantité et le nouveau prix. On utilise find pour renvoyer la valeur du premier élement trouvé
- * @param {object} id Représente l'id du produit
- * @param {number} newValue Représente le nouveau prix du produit acheté
- * @param {object} item Représente le produit
+ * Fonction 'newQuantityAndPrice' qui selectionne le produit grâce à l'EventListener afin de lui attribuer sa nouvelle valeur,
+ * sa nouvelle valeur lui est attribué sur la page panier et le localStorage
  */
+    
+function newQuantityAndPrice(dataProduct, newValue) {
+    const productWantTochange = arrayAllDataProducts.find((product) => product.id === dataProduct.id &amp;&amp; product.colors === dataProduct.colors);
+    productWantTochange.quantity = Number(newValue)
+    checkTotalQuantity();
+    checkTotalPrice();
 
-function newQuantityAndPrice(id, newValue, item) {
-        const newItemToBuy = saveOrderKeyStorage.find((item) => item.id === id);
-
-        newItemToBuy.quantity = Number(newValue);
-        item.quantity = newItemToBuy.quantity;
-
-        checkTotalPrice();
-        checkTotalQuantity();
-        saveNewPriceAndQuantity(item);
-    }
-
-/**
- * Fonction  qui va actualiser dans le local storage la clé qui a été ajouter auparavant avec la fonction "orderStorage" dans product.js 
- * sous la forme de "id (Nom du canapé) : colors (La couleur)"
- * @param {object} item Représente le produit
- */
-
-function saveNewPriceAndQuantity(item) {
-        const newSaveData = JSON.stringify(item);
-        const newKey = `${item.id}:${item.colors}`;
-
-        localStorage.setItem(newKey, newSaveData);
-    }
-
+    localStorage.setItem("panier", JSON.stringify(arrayAllDataProducts));
+}
 //==================================================================================================================================== 
 
 /**
  * On selectionne l'id #order pour lui attribuer un évenement au click pour agir sur le formulaire 
  */
 
-    const buttonOrder = document.querySelector("#order");
-    buttonOrder.addEventListener("click", (e) => formRequestPost(e));
+const buttonOrder = document.querySelector("#order");
+buttonOrder.addEventListener("click", (e) => formRequestPost(e));
+
+const errorFirstName = document.querySelector("#firstNameErrorMsg");
+const errorLastName = document.querySelector("#lastNameErrorMsg");
+const errorAddress = document.querySelector("#addressErrorMsg");
+const errorCity = document.querySelector("#cityErrorMsg");
+const errorEmail = document.querySelector("#emailErrorMsg");
+
+const form =  document.querySelector(".cart__order__form");
+const baliseInput = form.querySelectorAll("input");
 
 /**
- * Fonction qui envoie une requete POST avec Fetch à l'url de l'api, (alerte) si le tableau est de 0 produit, la requete ne s'effectue pas.   
- * @param {boolean} e Si le tableau est vide, le changement de page ne s'effectue pas
+ * On réunit nos regex pour filtrer les erreurs de formulaire et mauvaises syntaxes. 
+ * Le Regex me permet de définir un modèle attendu dans un texte. 
  */
+
+const regexFirsLastName = (value) => {
+    return /^(([a-zA-ZÀ-ÿ]+[\s\-]{1}[a-zA-ZÀ-ÿ]+)|([a-zA-ZÀ-ÿ]+))$/.test(value);
+};
+const regexCity = (value) => {
+    return /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(value);
+};
+
+const regexEmail = (value) => {
+    return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
+};
+
+const regexAdress = (value) => {
+    return /^[0-9]{1,4}[ ,-][ A-Za-zÀ-ÿ0-9\-]+$/.test(value);
+};
+
+/**
+ * Fonction formRequestPost qui envoie une requete POST avec Fetch à l'url de l'api et execute le formulaire que la fonction requestControllers lui envoie.
+ * Si le body est incorrect ou le panier est vide, la requete ne s'execute pas.
+ */
+
 function formRequestPost(e) {
-        e.preventDefault();
-        if (saveOrderKeyStorage.length === 0) alert("Votre panier est vide !");
+    e.preventDefault();
+    const body = requestControllers();
 
-        const body = requestControllers();
-
+    if (body === false) {
+        alert("Check your order form !");
+    } else if (idProductsForPOST.length === 0){
+        alert("You have not article in the basket!");
+    } else {
         fetch("http://localhost:3000/api/products/order", {
             method : "POST",
             body : JSON.stringify(body),
@@ -353,56 +388,149 @@ function formRequestPost(e) {
                 "Content-Type": "application/json"
             }
         })
-            .then((response) => response.json())
-            .then((data) => console.log(data)) 
+        .then((response) => response.json())
+        .then((data) => {
+            window.location = `../html/confirmation.html?id=${data.orderId}`;
+            return console.log(data);
+        }) 
+        .catch((err) => {
+            console.log(err);
+            alert("The request could not be completed, check if the local server is running !");
+        }); 
+        };
     }
 
 /**
- * Fonction qui agit sur la class ".cart__order__form", on utilise HTMLFormElement pour retourner HTMLFormControlCollection
- * On récupère les valeurs du tableau avec "value", on ajoute l'objet contact et la fonction va nous récupérer l'id
- * @returns L'objet contact avec ses données le tableau products
+ * Fonction 'selectIdFromRequestPost' qui push les ids des produits selectionner par l'utilisateur afin de l'envoyer à la requete POST
+ */
+
+function selectIdFromRequestPost() {
+    if (arrayLocalStorage === null) {
+        return false;
+    } else {
+        arrayLocalStorage.forEach(element => {
+            const orderId = element.id;
+            idProductsForPOST.push(orderId);
+        });
+    };
+};
+
+selectIdFromRequestPost();
+
+/**
+ * Fonction 'requestControllers' selectionne la classe cart__order__form. Il récupère les informations du formulaire données par l'utilisateur 
+ * @returns Retourne le body de la requete
  */
 
 function requestControllers() {
-        const cartForm = document.querySelector(".cart__order__form");
+    if ( checkedFirstNameInvalid() &amp;&amp; checkedLastNameInvalid() &amp;&amp; checkedAdressInvalid() &amp;&amp; checkedCityInvalid() &amp;&amp; checkedMailInvalid()){
+    const cartForm = document.querySelector(".cart__order__form");
 
-        const firstName = cartForm.elements.firstName.value;
-        const lastName = cartForm.elements.lastName.value;
-        const address = cartForm.elements.address.value;
-        const city = cartForm.elements.city.value;
-        const email = cartForm.elements.email.value;
-        const body = { 
-        contact: {
-            firstName: firstName,
-            lastName: lastName,
-            address: address,
-            city: city,
-            email: email 
-        },
+    const firstName = cartForm.elements.firstName.value;
+    const lastName = cartForm.elements.lastName.value;
+    const address = cartForm.elements.address.value;
+    const city = cartForm.elements.city.value;
+    const email = cartForm.elements.email.value;
+    const body = { 
+    contact: {
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        city: city,
+        email: email 
+    },
+    products: idProductsForPOST  
+     }
+     return body;
+} else {
+    return false;
+};
+};
 
-        products: idOrders()      
-         }
-         return body;
-    }        
-    
 /**
- * Fonction qui va récupérer le nombre d'item stockés dans le storageL
- * La boucle va récupérer la clé dans le storage, on utilise split pour selectionner uniquement la couleur dans l'id, on push pour finir dans le tableau "arrayProducts" 
- * @returns Le tableau avec son id
+ * Fonction 'checkedMailInvalid' check si le mail envoyé par l'utilisateur est valide et remplie les condition du regex
+ */
+    
+function checkedMailInvalid() {
+    const selectorIdEmail = document.querySelector("#email").value;
+
+    if (regexEmail(selectorIdEmail)) {
+        errorEmail.innerHTML = "";
+        return true;
+    } else {
+        errorEmail.innerHTML = "Please enter a valid email !";
+        return false;
+    };    
+};
+
+/**
+ * Fonction 'checkedFirstNameInvalid' check si le prénom envoyé par l'utilisateur est valide et remplie les condition du regex
  */
 
-function idOrders() {
-    const numberProducts = localStorage.length;
-    const arrayProducts = [];
+function checkedFirstNameInvalid() {
+    const selectorIdFirstName = document.querySelector("#firstName").value;
+    const selectorLength = selectorIdFirstName.length;
 
-    for (let i = 0; i &lt; numberProducts; i++) {
-        const products = localStorage.key(i);
-        const id = products.split(":")[0];
-        arrayProducts.push(id);
-    }
+    if (selectorLength &lt; 3 || selectorLength > 20) {
+        errorFirstName.innerHTML = "Please write your first name between 3 and 20 characters !";
+        return false;
+    } else if (regexFirsLastName(selectorIdFirstName)) {
+        errorFirstName.innerHTML = "";
+        return true;
+    } else {
+        errorFirstName.innerHTML = "Please write your first name without special characters or numbers !";   
+        return false;
+    };
+};
 
-    return arrayProducts;
-}</code></pre>
+/**
+ * Fonction 'checkedLastNameInvalid' check si le nom de famille envoyé par l'utilisateur est valide et remplie les condition du regex
+ */
+
+function checkedLastNameInvalid() {
+    const selectorIdLastName = document.querySelector("#lastName").value;
+
+    if (regexFirsLastName(selectorIdLastName)) {
+        errorLastName.innerHTML = "";
+        return true;
+    } else {
+        errorLastName.innerHTML = "Please write your name correctly !";
+
+        return false;
+    };
+};
+
+/**
+ * Fonction 'checkedAdressInvalid' check si l'adresse postale envoyé par l'utilisateur est valide et remplie les condition du regex
+ */
+
+function checkedAdressInvalid() {
+    const selectorIdAddress = document.querySelector("#address").value;
+
+    if (regexAdress(selectorIdAddress)) {
+        errorAddress.innerHTML = "";
+        return true;
+    } else {
+        errorAddress.innerHTML = "Please enter a correct address !";
+        return false;
+    };
+};
+
+/**
+ * Fonction 'checkedCityInvalid' check si la ville envoyé par l'utilisateur est valide et remplie les condition du regex
+ */
+
+function checkedCityInvalid() {
+    const selectorIdCity = document.querySelector("#city").value;
+
+    if (regexCity(selectorIdCity)) {
+        errorCity.innerHTML = "";
+        return true;
+    } else {
+        errorCity.innerHTML = "Please enter a valid city !";
+        return false;
+    };
+};</code></pre>
         </article>
     </section>
 
@@ -412,13 +540,13 @@ function idOrders() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#button">button</a></li><li><a href="global.html#buttonOrder">buttonOrder</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#checkTotalPrice">checkTotalPrice</a></li><li><a href="global.html#checkTotalQuantity">checkTotalQuantity</a></li><li><a href="global.html#containerItemContent">containerItemContent</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#divDeleteEvent">divDeleteEvent</a></li><li><a href="global.html#formRequestPost">formRequestPost</a></li><li><a href="global.html#idOrders">idOrders</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemContentDelete">itemContentDelete</a></li><li><a href="global.html#itemContentDescription">itemContentDescription</a></li><li><a href="global.html#itemContentQuantity">itemContentQuantity</a></li><li><a href="global.html#itemContentSettings">itemContentSettings</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#masterGlobalProduct">masterGlobalProduct</a></li><li><a href="global.html#newQuantityAndPrice">newQuantityAndPrice</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#productId">productId</a></li><li><a href="global.html#removeItemFromPage">removeItemFromPage</a></li><li><a href="global.html#removeItemFromStorage">removeItemFromStorage</a></li><li><a href="global.html#requestControllers">requestControllers</a></li><li><a href="global.html#saveNewPriceAndQuantity">saveNewPriceAndQuantity</a></li><li><a href="global.html#screenImageProduct">screenImageProduct</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#_id">_id</a></li><li><a href="global.html#addProductValid">addProductValid</a></li><li><a href="global.html#addQuantityForSimilarProduct">addQuantityForSimilarProduct</a></li><li><a href="global.html#allDataFromProduct">allDataFromProduct</a></li><li><a href="global.html#appendArticle">appendArticle</a></li><li><a href="global.html#arrayAllDataProducts">arrayAllDataProducts</a></li><li><a href="global.html#arrayLocalStorage">arrayLocalStorage</a></li><li><a href="global.html#articleComponents">articleComponents</a></li><li><a href="global.html#buildDescription">buildDescription</a></li><li><a href="global.html#buildImage">buildImage</a></li><li><a href="global.html#buildTitle">buildTitle</a></li><li><a href="global.html#buttonOrder">buttonOrder</a></li><li><a href="global.html#buyCLick">buyCLick</a></li><li><a href="global.html#checkedAdressInvalid">checkedAdressInvalid</a></li><li><a href="global.html#checkedCityInvalid">checkedCityInvalid</a></li><li><a href="global.html#checkedFirstNameInvalid">checkedFirstNameInvalid</a></li><li><a href="global.html#checkedLastNameInvalid">checkedLastNameInvalid</a></li><li><a href="global.html#checkedMailInvalid">checkedMailInvalid</a></li><li><a href="global.html#checkTotalPrice">checkTotalPrice</a></li><li><a href="global.html#checkTotalQuantity">checkTotalQuantity</a></li><li><a href="global.html#clearStorageAfterBuy">clearStorageAfterBuy</a></li><li><a href="global.html#containerItemContent">containerItemContent</a></li><li><a href="global.html#createBaliseArticle">createBaliseArticle</a></li><li><a href="global.html#displayProduct">displayProduct</a></li><li><a href="global.html#displayProductItem">displayProductItem</a></li><li><a href="global.html#divDeleteEvent">divDeleteEvent</a></li><li><a href="global.html#fetchFromLocalStorage">fetchFromLocalStorage</a></li><li><a href="global.html#fetchListProducts">fetchListProducts</a></li><li><a href="global.html#formRequestPost">formRequestPost</a></li><li><a href="global.html#idProductsForPOST">idProductsForPOST</a></li><li><a href="global.html#importColors">importColors</a></li><li><a href="global.html#importDescription">importDescription</a></li><li><a href="global.html#importImage">importImage</a></li><li><a href="global.html#importPrice">importPrice</a></li><li><a href="global.html#importTitle">importTitle</a></li><li><a href="global.html#itemContentDelete">itemContentDelete</a></li><li><a href="global.html#itemContentDescription">itemContentDescription</a></li><li><a href="global.html#itemContentQuantity">itemContentQuantity</a></li><li><a href="global.html#itemContentSettings">itemContentSettings</a></li><li><a href="global.html#itemsArticle">itemsArticle</a></li><li><a href="global.html#linkElement">linkElement</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#mergeDataProducts">mergeDataProducts</a></li><li><a href="global.html#newQuantityAndPrice">newQuantityAndPrice</a></li><li><a href="global.html#orderInvalid">orderInvalid</a></li><li><a href="global.html#orderStorage">orderStorage</a></li><li><a href="global.html#previewKanapArticle">previewKanapArticle</a></li><li><a href="global.html#pushOrderStorage">pushOrderStorage</a></li><li><a href="global.html#regexFirsLastName">regexFirsLastName</a></li><li><a href="global.html#removeItemFromPage">removeItemFromPage</a></li><li><a href="global.html#requestControllers">requestControllers</a></li><li><a href="global.html#resquestGetReceived">resquestGetReceived</a></li><li><a href="global.html#saveOrderStorage">saveOrderStorage</a></li><li><a href="global.html#screenImageProduct">screenImageProduct</a></li><li><a href="global.html#selectIdFromRequestPost">selectIdFromRequestPost</a></li><li><a href="global.html#urlParams">urlParams</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Jan 20 2022 13:29:09 GMT+0100 (Central European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Feb 06 2022 16:49:29 GMT+0100 (Central European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
